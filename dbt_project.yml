@@ -4,6 +4,10 @@ config-version: 2
 
 profile: intrinsic
 
+vars:
+  risk_free_rate: 0.14
+  terminal_growth_rate: 0.0378
+
 models:
   intrinsic:
     materialized: table
