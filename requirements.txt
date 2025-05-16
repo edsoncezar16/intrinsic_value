@@ -1,0 +1,5 @@
+dlt[duckdb,filesystem]>=1.10.0
+streamlit
+xlrd
+dbt-core
+dbt-duckdb

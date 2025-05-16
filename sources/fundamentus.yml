@@ -1,0 +1,7 @@
+version: 2
+
+sources:
+  - name: fundamentus
+    schema: fundamentus_data
+    tables:
+      - name: historical_earnings

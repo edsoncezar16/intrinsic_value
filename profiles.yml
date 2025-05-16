@@ -1,0 +1,6 @@
+intrinsic:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "fundamentus_pipeline.duckdb"

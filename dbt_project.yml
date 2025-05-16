@@ -1,0 +1,9 @@
+name: intrinsic
+
+config-version: 2
+
+profile: intrinsic
+
+models:
+  intrinsic:
+    materialized: table
