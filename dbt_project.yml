@@ -10,4 +10,10 @@ vars:
 
 models:
   intrinsic:
-    materialized: table
+    marts:
+      +materialized: table
+      +schema: analytics
+    intermediate:
+      +schema: intermediate
+    staging:
+      +schema: staging

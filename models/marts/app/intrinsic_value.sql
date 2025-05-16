@@ -7,4 +7,4 @@ SELECT
         terminal_growth_rate = var('terminal_growth_rate')
     ) }} * 1000 AS intrinsic_value
 FROM
-    {{ ref('prepared_historical_earnings') }}
+    {{ ref('int_historical_earnings_aggregated') }}

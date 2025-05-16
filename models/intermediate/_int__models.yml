@@ -1,0 +1,18 @@
+version: 2
+
+models:
+  - name: int_historical_earnings_aggregated
+    description: Computes useful aggregations of historical earnings for the computation of intrinsic value.
+    columns:
+      - name: company_name
+        description: The name of the company, as extracted from the balance sheet. Primary key.
+        tests:
+          - unique
+          - not_null
+      - name: past_5yr_earnings
+        description: >
+          The cumulative sum of the company earnings over a 5 year window,
+          starting up to 15 years in the past.
+      - name: current_5yr_earnings
+        description: >
+          The cumulative sum of the company earnings over the latest 5 year window.

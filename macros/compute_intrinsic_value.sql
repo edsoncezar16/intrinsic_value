@@ -2,7 +2,7 @@
     past_5yr_net_earnings,
     current_5yr_net_earnings,
     risk_free_rate,
-    terminal_growth_rate=0.0378
+    terminal_growth_rate
 ) %}
     {% set obs_growth_expr = "(" ~ current_5yr_net_earnings ~ "::float / " ~ past_5yr_net_earnings ~ "::float) ^ (1.0 / 10.0) - 1.0" %}
     {% set transient_growth_expr = "(" ~ terminal_growth_rate ~ " + (" ~ obs_growth_expr ~ ")) / 2.0" %}

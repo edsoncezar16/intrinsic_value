@@ -1,0 +1,14 @@
+version: 2
+
+models:
+  - name: intrinsic_value
+    description: Computes the intrinsic value for the company based on its historical earnings.
+    columns:
+      - name: company_name
+        description: The name of the company, as extracted from the balance sheet. Primary key.
+        tests:
+          - unique
+          - not_null
+      - name: intrinsic_value
+        description: >
+          The intrinsic value of the company.
