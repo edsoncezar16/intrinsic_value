@@ -1,6 +1,7 @@
-name: Daily DB Update
+name: Instrinc value data update
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * 1-5" # Monday to Friday Midnight UTC
 
