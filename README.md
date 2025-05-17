@@ -12,10 +12,5 @@ Computes the intrinsic value of a company based on a two-stage discounted cash f
    over the last 10 years.
 
 1. Steady-state with a terminal growth rate. This is taken to be the historical growth of the Brazilian
-   economy. For the date backing up this parameter, see:
+   economy. For the data backing up this parameter, see:
    `https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=BR`
-
-## TODO
-
-- Let user define margin of safety in the app and return all companies below the margin of safety (buy recommends by default)
-- Set option to get sell recommends.
