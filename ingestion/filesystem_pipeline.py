@@ -22,25 +22,18 @@ def historical_earnings(items: Iterator[FileItemDict]) -> Iterator[TDataItems]:
         # Open the file object.
         with file_obj.open() as file:
             balance_xlsx_bytes = extract_zip(file)["balanco.xls"]
-            quarter_column_headers = list(map(lambda x: f"Q-{60-x}", range(0, 60)))
             base_data = pd.read_excel(
                 balance_xlsx_bytes,
                 sheet_name="Dem. Result.",
                 header=None,
-                names=["metric"] + quarter_column_headers,
-                usecols="A:BI",
             )
-            # trick based on the file structure
-            company_name = base_data["Q-60"].values[0].split("-")[1].strip()
+            # tricks based on the file structure
+            company_name = base_data.iloc[0, 1].split("-")[1].strip()
+            base_historical_earnings = base_data.iloc[-1, 1:].to_list()
 
-            base_historical_earnings = (
-                base_data[quarter_column_headers].iloc[-1, :].to_list()
-            )
             yield {
                 "company_name": company_name,
-                "values": list(
-                    filter(lambda x: x is not None, base_historical_earnings)
-                ),
+                "values": [float(x) for x in base_historical_earnings if x is not None],
             }
 
 

@@ -2,7 +2,7 @@ import duckdb
 import streamlit as st
 
 
-@st.cache_data
+@st.cache_data(ttl=45.0)
 def recommends(margin_of_safety, kind):
     if kind == "buy":
         filter_condition = (
