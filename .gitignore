@@ -1,5 +1,6 @@
 .venv/
 .dlt/
+.env
 __pycache__/
 transformation/logs/
 transformation/target/

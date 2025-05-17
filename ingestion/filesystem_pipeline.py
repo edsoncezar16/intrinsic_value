@@ -1,6 +1,5 @@
 # flake8: noqa
 from typing import Iterator
-from destination import duckdb_destination
 import dlt
 from dlt.sources import TDataItems
 from dlt.sources.filesystem import FileItemDict, filesystem
@@ -48,8 +47,9 @@ if __name__ == "__main__":
     )
     # Execute the pipeline and load the extracted data into the "duckdb" destination.
     load_info = pipeline.run(
-        fundamentus_data,
-        destination=duckdb_destination,
+        fundamentus_data.apply_hints(write_disposition="replace"),
+        destination="motherduck",
+        refresh="drop_sources",
     )
     # Print the loading information.
     print(load_info)

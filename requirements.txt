@@ -1,6 +1,6 @@
-dlt[duckdb,filesystem]>=1.10.0
+dlt[motherduck,filesystem]>=1.10.0
 streamlit
 xlrd
 dbt-core
 dbt-duckdb
-scrapy
+beautifulsoup4

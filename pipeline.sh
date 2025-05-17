@@ -1,6 +1,6 @@
 #! /bin/bash
 
-set -eEu pipefail
+set -euxo pipefail
 
 cd ingestion || exit
 

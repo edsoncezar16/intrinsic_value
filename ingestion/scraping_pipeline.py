@@ -1,8 +1,9 @@
 import dlt
-from scrapy import Spider, Request
-from scrapy.http import Response
-from destination import duckdb_destination
-from scraping import run_pipeline
+from bs4 import BeautifulSoup
+from typing import Iterator, Any
+from dlt.sources.helpers import requests
+
+FUNDAMENTUS_BASE_URL: str = "https://www.fundamentus.com.br/detalhes.php?papel="
 
 
 def get_relevant_info(all_info: list[str], relevant_info: str) -> str:
@@ -11,23 +12,12 @@ def get_relevant_info(all_info: list[str], relevant_info: str) -> str:
     return all_info[index + 1]
 
 
-class FundamentusSpider(Spider):
-    name = "fundamentus"
-
-    start_urls = [
-        "https://www.fundamentus.com.br/detalhes.php?papel=ITUB3",
-    ]
-
-    def start_requests(self):
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:138.0) Gecko/20100101 Firefox/138.0"
-        }
-        for url in self.start_urls:
-            yield Request(url, headers=headers)
-
-    def parse(self, response: Response):
-        ticker = response.url.split("=")[-1]
-        all_info = response.css("span.txt::text").getall()
+@dlt.resource(standalone=True, max_table_nesting=0, write_disposition="replace")
+def market_data(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any]]:
+    for ticker in tickers:
+        response = requests.get(FUNDAMENTUS_BASE_URL + ticker)
+        soup = BeautifulSoup(response.text, "html.parser")
+        all_info = list(map(lambda x: x.text, soup.find_all("span", "txt")))
         company_name = get_relevant_info(all_info, "Empresa").split("ON")[0].strip()
         n_stocks = int(get_relevant_info(all_info, "Nro. Ações").replace(".", ""))
         market_price = float(get_relevant_info(all_info, "Cotação").replace(",", "."))
@@ -44,15 +34,14 @@ class FundamentusSpider(Spider):
 def scrape_fundamentus() -> None:
     pipeline = dlt.pipeline(
         pipeline_name="fundamentus_scraping_pipeline",
-        destination=duckdb_destination,
+        destination="motherduck",
         dataset_name="fundamentus",
+        refresh="drop_sources",
     )
 
-    run_pipeline(
-        pipeline,
-        FundamentusSpider,
-        table_name="market_data",
-    )
+    load_info = pipeline.run(market_data())
+
+    print(load_info)
 
 
 if __name__ == "__main__":
