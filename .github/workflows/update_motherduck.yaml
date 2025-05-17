@@ -1,0 +1,40 @@
+name: Daily DB Update
+
+on:
+  schedule:
+    - cron: "0 0 * * 1-5" # Monday to Friday Midnight UTC
+
+jobs:
+  scheduled-task:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Ingest balance sheets
+        env:
+          SOURCES__FILESYSTEM__BUCKET_URL: ${{ vars.FUNDAMENTUS_BUCKET }}
+          SOURCES__FILESYSTEM__CREDENTIALS__AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          SOURCES__FILESYSTEM__CREDENTIALS__AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SOURCES__FILESYSTEM__CREDENTIALS__REGION_NAME: ${{ secrets.AWS_REGION }}
+          DESTINATION__MOTHERDUCK__CREDENTIALS__DATABASE: ${{ secrets.MOTHERDUCK_DATABASE }}
+          DESTINATION__MOTHERDUCK__CREDENTIALS__PASSWORD: ${{ secrets.MOTHERDUCK_TOKEN }}
+
+        run: |
+          cd ingestion && python filesystem_pipeline.py
+
+      - name: Ingest closing market data
+        env:
+          SOURCES__SCRAPING_PIPELINE__TICKERS: ${{ vars.COMPANY_TICKERS }}
+          DESTINATION__MOTHERDUCK__CREDENTIALS__DATABASE: ${{ secrets.MOTHERDUCK_DATABASE }}
+          DESTINATION__MOTHERDUCK__CREDENTIALS__PASSWORD: ${{ secrets.MOTHERDUCK_TOKEN }}
+
+        run: |
+          cd ingestion && python scraping_pipeline.py
+
+      - name: Prepare intrinsic value data
+        env:
+          MOTHERDUCK_DATABASE: ${{ secrets.MOTHERDUCK_DATABASE }}
+          MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
+        run: |
+          cd transformation && dbt build
