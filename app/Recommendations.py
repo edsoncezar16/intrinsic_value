@@ -39,8 +39,8 @@ margin_of_safety = st.slider(
 
 st.header("Buy Recommendations")
 
-st.dataframe(recommends(margin_of_safety, "buy"))
+st.dataframe(recommends(margin_of_safety, "buy"), hide_index=True)
 
 st.header("Sell Recommendations")
 
-st.dataframe(recommends(margin_of_safety, "sell"))
+st.dataframe(recommends(margin_of_safety, "sell"), hide_index=True)
