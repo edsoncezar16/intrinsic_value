@@ -45,7 +45,7 @@ jobs:
         run: |
           cd ingestion && python scraping_pipeline.py
 
-      - name: Prepare intrinsic value data
+      - name: Prepare analytics data
         env:
           MOTHERDUCK_DATABASE: ${{ secrets.MOTHERDUCK_DATABASE }}
           MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
