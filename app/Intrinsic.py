@@ -13,7 +13,7 @@ st.header("Methodology")
 st.markdown(
     """
     Computes the intrinsic value of a company based on a two-stage discounted cash flow,
-    as outlined in the book [The Warren Buffet Way](https://www.amazon.com/Warren-Buffett-Way-Third/dp/1118819233). 
+    as outlined in the section *Value Tenets* from the book [The Warren Buffet Way](https://www.amazon.com/Warren-Buffett-Way-Third/dp/1118819233). 
     """
 )
 
@@ -33,7 +33,28 @@ st.markdown(
 st.write("For the mathematically inclined reader, we have:")
 
 st.latex(
-    r"V = \bar{E}_0 \left[\sum_{i=1}^{10} \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^i + \left(1 + \bar{\alpha}\right)^{10}\frac{\left(1 + \alpha_\infty\right)}{\gamma - \alpha_\infty}\right],\,\bar{\alpha} = \frac{\alpha_0 + \alpha_\infty}{2}"
+    r"""
+    V = \bar{E}_0 \left[\sum_{i=1}^{10} \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^i + \left(1 + \bar{\alpha}\right)^{10}\frac{\left(1 + \alpha_\infty\right)}{\gamma - \alpha_\infty}\right],\space \bar{\alpha} = \frac{\alpha_0 + \alpha_\infty}{2}
+    """
+)
+st.write("where:")
+st.latex(
+    r"""
+    \def\arraystretch{1.5}
+    \begin{array}{:c:c:}
+   \hdashline
+    V & \text{Intrinsic Value.}  \\ 
+    \hdashline
+    \bar{E}_0 & \text{Average net earnings over the last 5 years.}  \\
+    \hdashline
+    \alpha_0 & \text{Observed growth rate of the average net earnings over the last 10 years.}\\
+    \hdashline
+    \alpha_\infty & \text{Terminal growth rate of net earnings after the transient period.}\\
+    \hdashline
+    \gamma & \text{Interest rate for cash flow discount.}\\
+    \hdashline
+    \end{array}
+    """
 )
 
 st.markdown(
@@ -44,6 +65,9 @@ st.markdown(
     - Buy Recommendations: market_price < (1 - margin_of_safety) * intrinsic_value
     - Sell Recommendations: market_price > (1 + margin_of_safety) * intrinsic_value
 
+    *Note: When intrinsic_value is undefined - which is caused either by lack of data 
+    or when there are negative average net earnings - we also set it to be a sell recommendation.*
+   
     """
 )
 
