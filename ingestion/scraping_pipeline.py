@@ -51,7 +51,6 @@ def scrape_fundamentus() -> None:
     run_pipeline(
         pipeline,
         FundamentusSpider,
-        write_disposition="replace",
         table_name="market_data",
     )
 

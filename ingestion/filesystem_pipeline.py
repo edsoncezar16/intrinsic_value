@@ -48,7 +48,7 @@ if __name__ == "__main__":
     )
     # Execute the pipeline and load the extracted data into the "duckdb" destination.
     load_info = pipeline.run(
-        fundamentus_data.apply_hints(write_disposition="replace"),
+        fundamentus_data,
         destination=duckdb_destination,
     )
     # Print the loading information.
