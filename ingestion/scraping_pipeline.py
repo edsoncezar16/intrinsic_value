@@ -48,7 +48,12 @@ def scrape_fundamentus() -> None:
         dataset_name="fundamentus",
     )
 
-    run_pipeline(pipeline, FundamentusSpider, write_disposition="replace")
+    run_pipeline(
+        pipeline,
+        FundamentusSpider,
+        write_disposition="replace",
+        table_name="market_data",
+    )
 
 
 if __name__ == "__main__":
