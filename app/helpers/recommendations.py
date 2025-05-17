@@ -1,11 +1,5 @@
-import streamlit as st
 import duckdb
-
-st.title("Instrinsic")
-
-st.write(
-    "Instrinsic value of companies in the Brazilian stock exchange to support investments decisions."
-)
+import streamlit as st
 
 
 @st.cache_data
@@ -31,16 +25,3 @@ def recommends(margin_of_safety, kind):
             """
         ).fetch_df()
     return data
-
-
-margin_of_safety = st.slider(
-    "Enter you desired margin of safety: ", min_value=0.0, max_value=1.0, value=0.2
-)
-
-st.header("Buy Recommendations")
-
-st.dataframe(recommends(margin_of_safety, "buy"), hide_index=True)
-
-st.header("Sell Recommendations")
-
-st.dataframe(recommends(margin_of_safety, "sell"), hide_index=True)

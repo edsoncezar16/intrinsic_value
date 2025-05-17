@@ -1,5 +1,6 @@
 SELECT
     ticker,
+    company_name,
     ROUND(
         {{ compute_intrinsic_value(
             past_5yr_net_earnings = 'past_5yr_earnings',
