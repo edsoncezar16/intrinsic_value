@@ -1,6 +1,6 @@
 .venv/
 .dlt/
 __pycache__/
-logs/
-target/
+transformation/logs/
+transformation/target/
 fundamentus_pipeline.duckdb

@@ -3,4 +3,4 @@ intrinsic:
   outputs:
     dev:
       type: duckdb
-      path: "fundamentus_pipeline.duckdb"
+      path: "../intrinsic.duckdb"

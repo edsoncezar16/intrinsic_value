@@ -1,7 +1,6 @@
 # flake8: noqa
-import os
 from typing import Iterator
-
+from destination import duckdb_destination
 import dlt
 from dlt.sources import TDataItems
 from dlt.sources.filesystem import FileItemDict, filesystem
@@ -51,14 +50,13 @@ if __name__ == "__main__":
     fundamentus_data.max_table_nesting = 0
 
     pipeline = dlt.pipeline(
-        pipeline_name="fundamentus_pipeline",
-        destination="duckdb",
-        dataset_name="fundamentus_data",
+        pipeline_name="fundamentus_balance_sheets_pipeline",
+        destination=duckdb_destination,
+        dataset_name="fundamentus",
     )
     # Execute the pipeline and load the extracted data into the "duckdb" destination.
     load_info = pipeline.run(
         fundamentus_data.apply_hints(write_disposition="replace"),
-        refresh="drop_sources",
     )
     # Print the loading information.
     print(load_info)
