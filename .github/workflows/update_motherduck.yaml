@@ -1,4 +1,4 @@
-name: Instrinc value data update
+name: Analytics data update
 
 on:
   workflow_dispatch:
