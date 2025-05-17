@@ -4,3 +4,5 @@ xlrd
 dbt-core
 dbt-duckdb
 beautifulsoup4
+SQLAlchemy
+duckdb-engine
