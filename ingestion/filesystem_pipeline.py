@@ -36,7 +36,7 @@ def historical_earnings(items: Iterator[FileItemDict]) -> Iterator[TDataItems]:
             base_historical_earnings = (
                 base_data[quarter_column_headers].iloc[-1, :].to_list()
             )
-            return {
+            yield {
                 "company_name": company_name,
                 "values": list(
                     filter(lambda x: x is not None, base_historical_earnings)
@@ -51,12 +51,12 @@ if __name__ == "__main__":
 
     pipeline = dlt.pipeline(
         pipeline_name="fundamentus_balance_sheets_pipeline",
-        destination=duckdb_destination,
         dataset_name="fundamentus",
     )
     # Execute the pipeline and load the extracted data into the "duckdb" destination.
     load_info = pipeline.run(
         fundamentus_data.apply_hints(write_disposition="replace"),
+        destination=duckdb_destination,
     )
     # Print the loading information.
     print(load_info)
