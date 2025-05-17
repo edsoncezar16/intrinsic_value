@@ -3,4 +3,4 @@
 __pycache__/
 transformation/logs/
 transformation/target/
-fundamentus_pipeline.duckdb
+intrinsic.duckdb
