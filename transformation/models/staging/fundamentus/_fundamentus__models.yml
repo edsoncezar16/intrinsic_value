@@ -11,3 +11,23 @@ models:
           - not_null
       - name: historical_earnings
         description: The array of non-null historical eanings of the company over the last 15 years.
+
+  - name: stg_fundamentus__market_data
+    description: >
+      Market price and number of stocks from the previous day.
+    columns:
+      - name: ticker
+        description: The code of the common stock for the company. Primary key.
+        tests:
+          - unique
+          - not_null
+      - name: company_name
+        description: >
+          The name of the company, as extracted from the Fundamentus website. Foreing key.
+          Should match the company name extracted from the balance sheet.
+      - name: n_stocks
+        description: The quantity of common stocks of the company.
+      - name: market_price
+        description: The market quotation for the company.
+      - name: market_price_date
+        description: The (string) date where the end price was market price. Previous day.

@@ -4,11 +4,15 @@ models:
   - name: intrinsic_value
     description: Computes the intrinsic value for the company based on its historical earnings.
     columns:
-      - name: company_name
-        description: The name of the company, as extracted from the balance sheet. Primary key.
+      - name: ticker
+        description: The code of the common stock for the company. Primary key.
         tests:
           - unique
           - not_null
       - name: intrinsic_value
         description: >
           The intrinsic value of the company.
+      - name: market_price
+        description: The quotation of the company.
+      - name: as_of
+        description: The date of the value/price comparison of the company.
