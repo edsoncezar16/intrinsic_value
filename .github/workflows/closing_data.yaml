@@ -1,0 +1,33 @@
+name: Ingest Closing Market Data
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * 1-5" # Monday–Friday at midnight UTC
+
+jobs:
+  ingest-closing-data:
+    runs-on: ubuntu-latest
+    environment: dev
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install uv
+          uv pip install --system -r requirements.txt
+
+      - name: Ingest closing market data
+        env:
+          SOURCES__SCRAPING_PIPELINE__TICKERS: ${{ vars.COMPANY_TICKERS }}
+          DESTINATION__MOTHERDUCK__CREDENTIALS__DATABASE: ${{ secrets.MOTHERDUCK_DATABASE }}
+          DESTINATION__MOTHERDUCK__CREDENTIALS__PASSWORD: ${{ secrets.MOTHERDUCK_TOKEN }}
+        run: |
+          cd ingestion && python scraping_pipeline.py
