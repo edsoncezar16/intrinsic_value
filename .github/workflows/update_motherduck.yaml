@@ -64,6 +64,9 @@ jobs:
   prepare-analytics:
     runs-on: ubuntu-latest
     environment: dev
+    needs:
+      - ingest-balance-sheets
+      - ingest-closing-data
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
