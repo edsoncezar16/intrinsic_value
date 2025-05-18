@@ -5,6 +5,7 @@ from dlt.sources import TDataItems
 from dlt.sources.filesystem import FileItemDict, filesystem
 import pandas as pd
 from zipfile import ZipFile
+from io import BytesIO
 
 
 def extract_zip(input_bytes):
@@ -22,7 +23,7 @@ def historical_earnings(items: Iterator[FileItemDict]) -> Iterator[TDataItems]:
         with file_obj.open() as file:
             balance_xlsx_bytes = extract_zip(file)["balanco.xls"]
             base_data = pd.read_excel(
-                balance_xlsx_bytes,
+                BytesIO(balance_xlsx_bytes),
                 sheet_name="Dem. Result.",
                 header=None,
             )
