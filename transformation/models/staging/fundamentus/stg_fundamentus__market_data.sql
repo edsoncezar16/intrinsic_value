@@ -3,10 +3,12 @@ SELECT
     -- Fixes inconsistencies at the source:
     ---- type 1: mismatch between company names scraped from the website and from the balance sheets
     ---- type 2: wrong stock type on website
+    ---- type 3: company name contains "ON", which will conflict with scraping rules
     CASE
         WHEN company_name = 'CSNMINERACAO' THEN 'CSN MINERACAO' -- type 1
         WHEN company_name = 'COMPANHIA DE GÁS DE SÃO PAULO - COMGÁS' THEN 'COMPANHIA DE GÁS DE SÃO PAULO' -- type 1
         WHEN company_name = 'CYRELA BRAZIL REALTY PN' THEN 'CYRELA BRAZIL REALTY' -- type 2
+        WHEN company_name == 'BANCO DA AMAZ' THEN 'BANCO DA AMAZONIA S.A.' -- type 3
         ELSE company_name
     END AS company_name,
     n_stocks,
