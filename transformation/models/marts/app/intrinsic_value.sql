@@ -1,9 +1,6 @@
 SELECT
     ticker,
-    CASE
-        WHEN company_name = 'CSNMINERACAO' THEN 'CSN MINERACAO'
-        ELSE company_name
-    END AS company_name,
+    company_name,
     ROUND(
         {{ compute_intrinsic_value(
             past_5yr_net_earnings = 'past_5yr_earnings',
