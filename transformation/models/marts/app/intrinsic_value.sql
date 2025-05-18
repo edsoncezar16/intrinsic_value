@@ -1,11 +1,7 @@
 SELECT
     ticker,
     CASE
-        WHEN company_name = 'CSN MINERACAO' THEN REPLACE(
-            company_name,
-            " ",
-            ""
-        )
+        WHEN company_name = 'CSNMINERACAO' THEN 'CSN MINERACAO'
         ELSE company_name
     END AS company_name,
     ROUND(
