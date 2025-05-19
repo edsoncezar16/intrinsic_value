@@ -1,0 +1,28 @@
+version: 2
+
+macros:
+  - name: compute_intrinsic_value
+    description: >
+      Computes the intrinsic value of a company based on a two-stage discounted cash flow:
+
+      1. First stage with a 10 years transient period with growth at the arithmetic mean between
+      the terminal growth rate and the observed growth rate.
+
+      2. Steady-state with the terminal growth rate.
+    arguments:
+      - name: past_5yr_net_earnings
+        type: double
+        description: Rolling 20Q window cumulative net earnings ending 40 quarters back.
+      - name: current_5yr_net_earnings
+        type: double
+        description: Rolling 20Q window cumulative net earnings ending on the last quarter.
+      - name: risk_free_rate
+        type: double
+        description: >
+          An interest rate that we could safely achieve if we were to choose a fixed-income investment. 
+          For B3, could be taken as the long-term pre-fixed government bond ("tesouro pre-fixado de longo prazo").
+      - name: terminal_growth_rate
+        type: double
+        description: >
+          A very conservative estimate of the long-term gorwth rate for a company.
+          For B3, could be taken from this -> https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=BR

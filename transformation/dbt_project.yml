@@ -17,3 +17,6 @@ models:
       +schema: intermediate
     staging:
       +schema: staging
+seeds:
+  intrinsic:
+    +schema: seeds
