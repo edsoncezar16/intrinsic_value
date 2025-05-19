@@ -8,7 +8,11 @@ SELECT
         WHEN company_name = 'CSNMINERACAO' THEN 'CSN MINERACAO' -- type 1
         WHEN company_name = 'COMPANHIA DE GÁS DE SÃO PAULO - COMGÁS' THEN 'COMPANHIA DE GÁS DE SÃO PAULO' -- type 1
         WHEN company_name = 'CYRELA BRAZIL REALTY PN' THEN 'CYRELA BRAZIL REALTY' -- type 2
-        WHEN company_name == 'BANCO DA AMAZ' THEN 'BANCO DA AMAZONIA S.A.' -- type 3
+        WHEN company_name = 'BANCO DA AMAZ' THEN 'BANCO DA AMAZONIA S.A.' -- type 3
+        WHEN company_name = 'CIA ENERG CEARA - COELCE' THEN 'CIA ENERG CEARA' -- type 1
+        WHEN company_name = 'OD' THEN 'ODONTOPREV' -- type 3
+        WHEN company_name = 'PETROREC' THEN 'PETRORECONCA' -- type 3
+        WHEN company_name = 'WILS' THEN 'WILSON SONS' -- type 3
         ELSE company_name
     END AS company_name,
     n_stocks,
