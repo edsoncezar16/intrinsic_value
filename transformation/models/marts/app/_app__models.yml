@@ -9,10 +9,14 @@ models:
         tests:
           - unique
           - not_null
+      - name: company_name
+        description: The name of the company.
+      - name: industry
+        description: The industry of the company, in English.
       - name: intrinsic_value
         description: >
-          The intrinsic value of the company.
+          The intrinsic value of the company common stock.
       - name: market_price
-        description: The quotation of the company.
+        description: The market quotation of the company common stock.
       - name: as_of
-        description: The date of the value/price comparison of the company.
+        description: The date of the value/price comparison of the company common stock.

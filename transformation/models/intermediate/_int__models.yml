@@ -5,7 +5,7 @@ models:
     description: Computes useful aggregations of historical earnings for the computation of intrinsic value.
     columns:
       - name: company_name
-        description: The name of the company, as extracted from the balance sheet. Primary key.
+        description: The name of the company.
         tests:
           - unique
           - not_null

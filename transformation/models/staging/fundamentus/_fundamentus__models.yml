@@ -5,7 +5,10 @@ models:
     description: Polished version of historical earnings, with array of doubles.
     columns:
       - name: company_name
-        description: The name of the company, as extracted from the balance sheet. Primary key.
+        description: >
+          The name of the company, as extracted from the balance sheet. Primary key.
+          Properly adjusted to match the company name extracted from the Fundamentus website.
+
         tests:
           - unique
           - not_null
@@ -24,7 +27,9 @@ models:
       - name: company_name
         description: >
           The name of the company, as extracted from the Fundamentus website. Foreing key.
-          Should match the company name extracted from the balance sheet.
+          Properly adjusted to match the company name extracted from the balance sheet.
+      - name: industry
+        description: The industry of the company, in English.
       - name: n_stocks
         description: The quantity of common stocks of the company.
       - name: market_price
