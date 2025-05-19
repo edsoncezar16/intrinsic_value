@@ -13,6 +13,7 @@ SELECT
         WHEN company_name = 'OD' THEN 'ODONTOPREV' -- type 3
         WHEN company_name = 'PETROREC' THEN 'PETRORECONCA' -- type 3
         WHEN company_name = 'WILS' THEN 'WILSON SONS' -- type 3
+        WHEN company_name = 'M' THEN 'MONARK' -- type 3
         ELSE company_name
     END AS company_name,
     industry,
