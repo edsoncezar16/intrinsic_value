@@ -22,9 +22,11 @@ def market_data(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any
         n_stocks = int(get_relevant_info(all_info, "Nro. Ações").replace(".", ""))
         market_price = float(get_relevant_info(all_info, "Cotação").replace(",", "."))
         market_price_date = get_relevant_info(all_info, "Data últ cot")
+        industry = get_relevant_info(all_info, "Subsetor")
         yield {
             "ticker": ticker,
             "company_name": company_name,
+            "industry": industry,
             "n_stocks": n_stocks,
             "market_price": market_price,
             "market_price_date": market_price_date,

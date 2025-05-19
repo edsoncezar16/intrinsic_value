@@ -15,6 +15,7 @@ SELECT
         WHEN company_name = 'WILS' THEN 'WILSON SONS' -- type 3
         ELSE company_name
     END AS company_name,
+    industry,
     n_stocks,
     market_price,
     market_price_date
