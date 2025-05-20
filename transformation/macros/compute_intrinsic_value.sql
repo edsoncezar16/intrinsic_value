@@ -21,7 +21,7 @@
           or {{ current_5yr_net_earnings }} <= 0
           or {{ past_5yr_net_earnings }} is null
           or {{ current_5yr_net_earnings }} is null
-        then null
+        then 0.0
         else (
             ({{ current_5yr_net_earnings }}::float / 5.0)
             * ({{ transient_sum_expr }} + {{ steady_factor_expr }})
