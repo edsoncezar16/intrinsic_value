@@ -1,16 +1,21 @@
 import streamlit as st
-import helpers
+from helpers import (
+    get_analysis_data,
+    get_average_price,
+    get_average_value,
+    get_total_companies,
+)
 import plotly.express as px
 
 st.title("Dashboard")
 
 st.header("Big Numbers")
 a, b, c = st.columns(3)
-a.metric("Total Companies Covered", helpers.get_total_companies())
-b.metric("Average Market Price", helpers.get_average_price())
-c.metric("Average Intrinsic Value", helpers.get_average_value())
+a.metric("Total Companies Covered", get_total_companies())
+b.metric("Average Market Price", get_average_price())
+c.metric("Average Intrinsic Value", get_average_value())
 
-analysis_data = helpers.get_analysis_data()
+analysis_data = get_analysis_data()
 
 st.header("Bargain Companies")
 
