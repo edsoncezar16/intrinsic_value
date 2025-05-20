@@ -80,3 +80,19 @@ st.markdown(
     and up to date information of the underlying fundamentals of Brazilian companies.
     """
 )
+
+st.header("Data Availability")
+
+st.markdown(
+    """
+    From all of the `289` companies listed at B3, we **don't cover** the following `5`due to
+    data being unavailable in some form as to make the analysis unfeasible:
+
+    - CIABRASF (ADMF3)
+    - RDVC CITY (CCTY3)
+    - REVEE (RVEE3)
+    - IRB(RE) (IRBR3)
+    - SANSUY (SNSY3)
+    
+    """
+)
