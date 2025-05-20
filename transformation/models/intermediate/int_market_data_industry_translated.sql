@@ -10,6 +10,6 @@ FROM
         'stg_fundamentus__market_data'
     ) }}
     m
-    LEFT JOIN {{ ref(industry_translation) }}
+    LEFT JOIN {{ ref('industry_translation') }}
     t
     ON m.industry = t.industry_pt
