@@ -30,6 +30,6 @@ FROM
         'market_data'
     ) }}
     m
-    JOIN {{ ref('industry_translation') }}
+    LEFT JOIN {{ ref('industry_translation') }}
     t
     ON m.industry = t.industry_pt
