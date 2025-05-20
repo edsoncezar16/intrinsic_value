@@ -3,7 +3,7 @@ import streamlit as st
 st.title("Intrinsic")
 
 st.write(
-    "Instrinsic value of companies in the Brazilian stock exchange to support investments decisions."
+    "A data app to support value investing decisions in the Braziian Stock Exchange."
 )
 
 
