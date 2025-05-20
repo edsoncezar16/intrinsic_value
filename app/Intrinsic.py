@@ -27,6 +27,8 @@ st.markdown(
    economy. 
    For the data backing up this parameter, see: 
    `https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=BR`
+
+*Note: if either average earnings is negative, we set intrinsic_value = 0.0*.
 """
 )
 
@@ -64,10 +66,6 @@ st.markdown(
     
     - Buy Recommendations: market_price < (1 - margin_of_safety) * intrinsic_value
     - Sell Recommendations: market_price > (1 + margin_of_safety) * intrinsic_value
-
-    *Note: When intrinsic_value is undefined - which is caused either by lack of data 
-    or when there are negative average net earnings - we also set it to be a sell recommendation.*
-   
     """
 )
 

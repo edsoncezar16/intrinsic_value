@@ -1,9 +1,6 @@
 import streamlit as st
 from streamlit.connections import SQLConnection
-
-QUERY_TTL = "8h"
-
-CONN_TTL_SECONDS = 50.0
+from .config import QUERY_TTL, CONN_TTL_SECONDS
 
 
 @st.cache_data(ttl=QUERY_TTL)
@@ -28,7 +25,7 @@ def recommends(
             SELECT * 
             FROM main_analytics.intrinsic_value
             {filter_condition}
-            ORDER BY intrinsic_value {"DESC" if kind == "buy" else ""} 
+            ORDER BY intrinsic_value DESC 
             """,
         ttl=QUERY_TTL,
     )

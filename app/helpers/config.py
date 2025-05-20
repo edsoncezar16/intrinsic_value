@@ -1,0 +1,3 @@
+QUERY_TTL = "8h"
+
+CONN_TTL_SECONDS = 50.0
