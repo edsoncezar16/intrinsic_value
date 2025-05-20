@@ -21,3 +21,14 @@ as outlined in the book [The Warren Buffet Way](https://www.amazon.com/Warren-Bu
 The author wholeheartedly thanks the maintainers of the
 [Fundamentus](https://www.fundamentus.com.br/index.php) website, which provides easy access to accurate
 and up to date information of the underlying fundamentals of Brazilian companies.
+
+## Notes on data availability
+
+From all the `289` companies listed at B3, we **don't cover** the following `5`due to
+data being unavailable in some form as to make the analysis unfeasible:
+
+- CIABRASF (ADMF3)
+- RDVC CITY (CCTY3)
+- REVEE (RVEE3)
+- IRB(RE) (IRBR3)
+- SANSUY (SNSY3)
