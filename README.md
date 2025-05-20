@@ -1,7 +1,6 @@
 # Intrinsic
 
-A data app that allows one to assess the intrinsic value of a company from the Brazilian stock exchange
-based on its historical performance, expected long-term growth rate, and discount rate.
+A data app to support value investing decisions in the Braziian Stock Exchange.
 
 ## Methodology
 
