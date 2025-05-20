@@ -6,7 +6,8 @@ SELECT
     CASE
         WHEN company_name = 'IOCHPE' THEN 'IOCHPE-MAXION' -- type 1
         WHEN company_name = 'FRAS' THEN 'FRAS-LE S.A.' -- type 1
-        WHEN company_name = 'CEB' THEN 'CEB - COMPANHIA ENERGÉTICA DE BRASÍLIA' -- type 2
+        WHEN company_name = 'CEB' THEN 'CEB - COMPANHIA ENERGÉTICA DE BRASÍLIA' -- type 1
+        WHEN company_name = 'Log' THEN 'Log-In' -- type 1
         ELSE company_name
     END AS company_name,
     CAST(
