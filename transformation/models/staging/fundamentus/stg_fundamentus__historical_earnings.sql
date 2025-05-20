@@ -8,6 +8,7 @@ SELECT
         WHEN company_name = 'FRAS' THEN 'FRAS-LE S.A.' -- type 1
         WHEN company_name = 'CEB' THEN 'CEB - COMPANHIA ENERGÉTICA DE BRASÍLIA' -- type 1
         WHEN company_name = 'Log' THEN 'Log-In' -- type 1
+        WHEN company_name = 'QUERO' THEN 'QUERO-QUERO'
         ELSE company_name
     END AS company_name,
     CAST(
