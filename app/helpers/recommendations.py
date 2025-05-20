@@ -1,13 +1,12 @@
 import streamlit as st
 from streamlit.connections import SQLConnection
 
-# should be set to '1d' after development is done
-QUERY_TTL_SECONDS = 30.0
+QUERY_TTL = "8h"
 
-CONN_TTL_SECONDS = 60.0
+CONN_TTL_SECONDS = 50.0
 
 
-@st.cache_data(ttl=QUERY_TTL_SECONDS)
+@st.cache_data(ttl=QUERY_TTL)
 def recommends(
     margin_of_safety: float,
     kind: str,
@@ -31,5 +30,5 @@ def recommends(
             {filter_condition}
             ORDER BY intrinsic_value {"DESC" if kind == "buy" else ""} 
             """,
-        ttl=QUERY_TTL_SECONDS,
+        ttl=QUERY_TTL,
     )
