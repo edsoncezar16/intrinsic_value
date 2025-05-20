@@ -20,6 +20,8 @@ SELECT
         WHEN company_name = '' THEN 'ONCOCLINICAS' -- type 3
         WHEN company_name = 'ORIZ' THEN 'ORIZON' -- type 3
         WHEN company_name = 'ELECTRO AÇO ALT' THEN 'ELECTRO AÇO ALTONA S/A' -- type 3
+        WHEN company_name = 'NORD' THEN 'NORDON INDS METALURGICAS SA' -- type 3
+        WHEN company_name = 'REAGINVEST' THEN 'GETNINJAS' -- type 1
         ELSE company_name
     END AS company_name,
     industry,
