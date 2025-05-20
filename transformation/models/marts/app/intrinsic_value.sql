@@ -15,4 +15,4 @@ SELECT
     market_price_date AS as_of
 FROM
     {{ ref('int_historical_earnings_aggregated') }}
-    LEFT JOIN {{ ref('stg_fundamentus__market_data') }} USING (company_name)
+    LEFT JOIN {{ ref('int_market_data_industry_translated') }} USING (company_name)

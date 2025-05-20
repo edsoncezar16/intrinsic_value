@@ -20,7 +20,7 @@ SELECT
         WHEN company_name = '' THEN 'ONCOCLINICAS' -- type 3
         ELSE company_name
     END AS company_name,
-    industry_en AS industry,
+    industry,
     n_stocks,
     market_price,
     market_price_date
@@ -29,7 +29,3 @@ FROM
         'fundamentus',
         'market_data'
     ) }}
-    m
-    LEFT JOIN {{ ref('industry_translation') }}
-    t
-    ON m.industry = t.industry_pt

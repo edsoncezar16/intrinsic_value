@@ -29,7 +29,7 @@ models:
           The name of the company, as extracted from the Fundamentus website. Foreing key.
           Properly adjusted to match the company name extracted from the balance sheet.
       - name: industry
-        description: The industry of the company, in English.
+        description: The industry of the company, in Brazilian Portuguese.
       - name: n_stocks
         description: The quantity of common stocks of the company.
       - name: market_price
