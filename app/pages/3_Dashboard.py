@@ -20,13 +20,16 @@ analysis_data = get_analysis_data()
 st.header("Bargain Companies")
 
 plotted_bargain = (
-    analysis_data.sort_values("discount").tail(5).set_index("company_name")
+    analysis_data.rename(columns={"discount": "discount (%)"})
+    .sort_values("discount (%)")
+    .tail(5)
+    .set_index("company_name")
 )
 
 value_fig = px.bar(
     plotted_bargain,
     y=plotted_bargain.index,
-    x="discount",
+    x="discount (%)",
     title="Top 5 Companies by Discount from Intrinsic Value",
     height=40 * len(plotted_bargain),
 )
@@ -47,15 +50,15 @@ st.header("Overpriced Companies")
 plotted_overpriced = (
     analysis_data.set_index("company_name")
     .map(lambda x: -x)
-    .rename(columns={"discount": "excess"})
-    .sort_values("excess")
+    .rename(columns={"discount": "excess (%)"})
+    .sort_values("excess (%)")
     .tail(5)
 )
 
 value_fig = px.bar(
     plotted_overpriced,
     y=plotted_overpriced.index,
-    x="excess",
+    x="excess (%)",
     title="Top 5 Companies by Excess over Intrinsic Value",
     height=40 * len(plotted_overpriced),
 )

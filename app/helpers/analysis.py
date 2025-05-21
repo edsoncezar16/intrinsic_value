@@ -64,7 +64,7 @@ def get_analysis_data(
 ):
     return conn.query(
         """
-            SELECT company_name, round(1.0 - market_price / intrinsic_value, 2) as discount
+            SELECT company_name, round(1.0 - market_price / intrinsic_value, 4) * 100 as discount
             FROM main_analytics.intrinsic_value
             WHERE intrinsic_value > 0.0
             """,
