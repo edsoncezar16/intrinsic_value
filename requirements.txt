@@ -1,4 +1,5 @@
 dlt[motherduck,filesystem]>=1.10.0
+duckdb==1.2.2
 streamlit
 xlrd
 dbt-core
