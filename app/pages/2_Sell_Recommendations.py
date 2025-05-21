@@ -1,7 +1,13 @@
 import streamlit as st
 from helpers import recommends
 import plotly.express as px
+import pandas as pd
+from io import BytesIO
 
+with st.sidebar:
+    current_position = st.file_uploader(
+        "(Optional) Enter a CSV file with your position in the format (ticker, stocks).",
+    )
 
 st.title("Sell Recommendations")
 
@@ -19,6 +25,11 @@ margin_of_safety = st.slider(
 )
 
 sell_recommends = recommends(margin_of_safety, "sell")
+if current_position:
+    position = pd.read_csv(
+        BytesIO(current_position.read()), header=None, names=["ticker", "position"]
+    )
+    sell_recommends = sell_recommends.merge(position, how="left", on="ticker")
 
 st.write(f"Found {sell_recommends.shape[0]} sell recommendations:")
 st.dataframe(sell_recommends, hide_index=True, height=250)
