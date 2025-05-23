@@ -3,6 +3,10 @@ name: Ingest Balance Sheets
 on:
   workflow_dispatch:
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   ingest-balance-sheets:
     runs-on: ubuntu-latest
