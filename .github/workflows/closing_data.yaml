@@ -3,7 +3,7 @@ name: Ingest Closing Market Data
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 4 * * 1-5" # Monday–Friday at 4AM UTC
+    - cron: "0 3 * * 1-5"
 
 jobs:
   ingest-closing-data:
