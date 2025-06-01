@@ -33,7 +33,9 @@ if current_position:
     position = pd.read_csv(
         BytesIO(current_position.read()), header=None, names=["ticker", "position"]
     )
-    buy_recommends = buy_recommends.merge(position, how="left", on="ticker")
+    buy_recommends = buy_recommends.merge(position, how="left", on="ticker").fillna(
+        {"position": 0}
+    )
 
 st.write(f"Found {buy_recommends.shape[0]} buy recommendations:")
 st.dataframe(buy_recommends, hide_index=True, height=250)
