@@ -28,7 +28,9 @@ st.markdown(
    For the data backing up this parameter, see: 
    `https://data.worldbank.org/indicator/NY.GDP.MKTP.KD?end=2023&locations=BR&start=1960&view=chart`
 
-*Note: if either average earnings is negative, we set intrinsic_value = 0.0*.
+*Note 1: if either average earnings is negative, we set intrinsic_value = 0.0*.
+*Note 2: we use a finite investment horizon because it forces much more conservative estimates of intrinsic value, which helps
+balances the usage of book earnings instead of 'owner earnings' as proposed by Buffet. 
 """
 )
 
