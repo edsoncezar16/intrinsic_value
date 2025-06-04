@@ -9,18 +9,18 @@ def compute_intrinsic_value(
     1. First stage with a 10 years transient period with growth at the arithmetic mean between
     the terminal growth rate and the observed growth rate.
 
-    2. Steady-state with the terminal growth rate.
+    2. Second stage with a 25 years horizon with a terminal growth rate.
 
     Parameters:
         past_5yr_net_earnings: rolling 20Q window cumulative net earnings ending 40 quarters back.
 
         current_5yr_net_earnings: rolling 20Q window cumulative net earnings ending on the last quarter.
 
-        risk_free_rate: an interest rate that we could safely achieve if we were to choose a fixed-income investment. 
-        For B3, could be taken as the long-term pre-fixed government bond ("tesouro pre-fixado de longo prazo").
+        risk_free_rate: an interest rate that we could safely achieve if we were to choose a fixed-income investment.
+        For B3, could be taken as the long-term inflation-protected government bond.
 
-        terminal_growth_rate: a very conservative estimate of the long-term gorwth rate for a company.
-        For B3, could be taken from this -> https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=BR
+        terminal_growth_rate: a very conservative estimate of the long-term growth rate for a company.
+        For B3, could be taken from this -> https://data.worldbank.org/indicator/NY.GDP.MKTP.KD?end=2023&locations=BR&start=1960&view=chart
         Whence the default value given.
 
     Returns:
@@ -33,21 +33,26 @@ def compute_intrinsic_value(
     transient_period_growth_rate: float = (
         terminal_growth_rate + observed_growth_rate
     ) / 2.0
-    # useful param to simplify computations
-    geometric_factor: float = (1.0 + transient_period_growth_rate) / (
+    transient_geometric_factor: float = (1.0 + transient_period_growth_rate) / (
         1.0 + risk_free_rate
     )
     transient_period_factor: float = 0.0
     for i in range(1, 11):
-        transient_period_factor += geometric_factor**i
+        transient_period_factor += transient_geometric_factor**i
     # second stage
-    steady_period_factor: float = (
-        (1.0 + transient_period_growth_rate) ** 10
-        * (1.0 + terminal_growth_rate)
-        / (risk_free_rate - terminal_growth_rate)
+    steady_geometric_factor: float = (1.0 + terminal_growth_rate) / (
+        1.0 + risk_free_rate
     )
-    return current_5yr_net_earnings / 5.0 * (
-        transient_period_factor + steady_period_factor
+    steady_period_factor: float = 0.0
+    for i in range(1, 26):
+        steady_period_factor += steady_geometric_factor**i
+    return (
+        current_5yr_net_earnings
+        / 5.0
+        * (
+            transient_period_factor
+            + (1.0 + transient_period_growth_rate) ** 10 * steady_period_factor
+        )
     )
 
 

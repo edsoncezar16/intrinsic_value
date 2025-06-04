@@ -20,11 +20,8 @@ st.warning(
     icon="⚠️",
 )
 
-margin_of_safety = st.slider(
-    "Enter you desired margin of safety: ", min_value=0.1, max_value=0.5, value=0.2
-)
+sell_recommends = recommends("sell")
 
-sell_recommends = recommends(margin_of_safety, "sell")
 if current_position:
     position = pd.read_csv(
         BytesIO(current_position.read()), header=None, names=["ticker", "position"]

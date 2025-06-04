@@ -13,7 +13,7 @@ st.header("Methodology")
 st.markdown(
     """
     Computes the intrinsic value of a company based on a two-stage discounted cash flow,
-    as outlined in the section *Value Tenets* from the book [The Warren Buffet Way](https://www.amazon.com/Warren-Buffett-Way-Third/dp/1118819233). 
+    as outlined in the book [The Warren Buffet Way](https://www.amazon.com/Warren-Buffett-Way-Third/dp/1118819233). 
     """
 )
 
@@ -23,10 +23,10 @@ st.markdown(
    the terminal growth rate and the observed growth rate of the 5-year average net earnings
    over the last 10 years.
 
-1. Steady-state with a terminal growth rate. This is taken to be the historical growth of the Brazilian
+1. Steady-state of 25 year horizon with a terminal growth rate. This is taken to be the historical growth of the Brazilian
    economy. 
    For the data backing up this parameter, see: 
-   `https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=BR`
+   `https://data.worldbank.org/indicator/NY.GDP.MKTP.KD?end=2023&locations=BR&start=1960&view=chart`
 
 *Note: if either average earnings is negative, we set intrinsic_value = 0.0*.
 """
@@ -36,7 +36,7 @@ st.write("For the mathematically inclined reader, we have:")
 
 st.latex(
     r"""
-    V = \bar{E}_0 \left[\sum_{i=1}^{10} \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^i + \left(1 + \bar{\alpha}\right)^{10}\frac{\left(1 + \alpha_\infty\right)}{\gamma - \alpha_\infty}\right],\space \bar{\alpha} = \frac{\alpha_0 + \alpha_\infty}{2}
+    V = \bar{E}_0 \left[\sum_{i=1}^{10} \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^i + \left(1 + \bar{\alpha}\right)^{10}\sum_{i=1}^{25} \left(\frac{1 + \bar{\alpha_{\infty}}}{1 + \gamma}\right)^i\right],\space \bar{\alpha} = \frac{\alpha_0 + \alpha_\infty}{2}
     """
 )
 st.write("where:")
@@ -65,7 +65,7 @@ st.markdown(
     we compute buy and sell recommendations as follows:
     
     - Buy Recommendations: market_price < (1 - margin_of_safety) * intrinsic_value
-    - Sell Recommendations: market_price > (1 + margin_of_safety) * intrinsic_value
+    - Sell Recommendations: market_price > intrinsic_value
     """
 )
 
