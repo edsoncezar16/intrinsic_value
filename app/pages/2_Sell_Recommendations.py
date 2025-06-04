@@ -20,7 +20,7 @@ st.warning(
     icon="⚠️",
 )
 
-sell_recommends = recommends("sell")
+sell_recommends = recommends(kind="sell")
 
 if current_position:
     position = pd.read_csv(
