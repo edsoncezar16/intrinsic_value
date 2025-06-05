@@ -22,7 +22,7 @@ macros:
         type: double
         description: >
           An interest rate that we could safely achieve if we were to choose a fixed-income investment. 
-          For B3, could be taken as the long-term inflation-protected government bond.
+          For B3, could be taken as the long-term fixed-income government bond.
       - name: terminal_growth_rate
         type: double
         description: >

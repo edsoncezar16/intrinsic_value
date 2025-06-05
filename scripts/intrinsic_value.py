@@ -17,7 +17,7 @@ def compute_intrinsic_value(
         current_5yr_net_earnings: rolling 20Q window cumulative net earnings ending on the last quarter.
 
         risk_free_rate: an interest rate that we could safely achieve if we were to choose a fixed-income investment.
-        For B3, could be taken as the long-term inflation-protected government bond.
+        For B3, could be taken as the long-term fixed-income government bond.
 
         terminal_growth_rate: a very conservative estimate of the long-term growth rate for a company.
         For B3, could be taken from this -> https://data.worldbank.org/indicator/NY.GDP.MKTP.KD?end=2023&locations=BR&start=1960&view=chart
