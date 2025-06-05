@@ -36,7 +36,7 @@ st.write("For the mathematically inclined reader, we have:")
 
 st.latex(
     r"""
-    V = \bar{E}_0 \left[\sum_{i=1}^{10} \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^i + \left(1 + \bar{\alpha}\right)^{10}\left(\frac{1 + \alpha_\infty}{\gamma - \alpha_\infty}\right)\right],\space \bar{\alpha} = \frac{\alpha_0 + \alpha_\infty}{2}
+    V = \bar{E}_0 \left[\sum_{i=1}^{10} \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^i + \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^{10}\left(\frac{1 + \alpha_\infty}{\gamma - \alpha_\infty}\right)\right],\space \bar{\alpha} = \frac{\alpha_0 + \alpha_\infty}{2}
     """
 )
 st.write("where:")
