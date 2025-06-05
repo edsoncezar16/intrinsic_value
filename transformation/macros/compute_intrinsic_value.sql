@@ -16,7 +16,7 @@
     -- steady period
     {% set steady_sum_expr = "(1.0 + (" ~ terminal_growth_rate ~ ")) / ((" ~ risk_free_rate ~ ") - (" ~ terminal_growth_rate ~ "))" %}
 
-    {% set steady_earnings_expr = "POWER(1.0 + (" ~ transient_growth_expr ~ "), 10)" %}
+    {% set steady_earnings_expr = "POWER(" ~ geom_factor_expr ~ ", 10)" %}
 
     case
         when {{ past_5yr_net_earnings }} <= 0

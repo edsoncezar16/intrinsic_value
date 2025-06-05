@@ -46,7 +46,7 @@ def compute_intrinsic_value(
         / 5.0
         * (
             transient_period_factor
-            + (1.0 + transient_period_growth_rate) ** 10 * steady_period_factor
+            + (transient_geometric_factor) ** 10 * steady_period_factor
         )
     )
 
