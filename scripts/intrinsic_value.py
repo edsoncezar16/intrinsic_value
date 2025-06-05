@@ -9,7 +9,7 @@ def compute_intrinsic_value(
     1. First stage with a 10 years transient period with growth at the arithmetic mean between
     the terminal growth rate and the observed growth rate.
 
-    2. Second stage with a 25 years horizon with a terminal growth rate.
+    2. Steady-state with a terminal growth rate.
 
     Parameters:
         past_5yr_net_earnings: rolling 20Q window cumulative net earnings ending 40 quarters back.
@@ -40,12 +40,7 @@ def compute_intrinsic_value(
     for i in range(1, 11):
         transient_period_factor += transient_geometric_factor**i
     # second stage
-    steady_geometric_factor: float = (1.0 + terminal_growth_rate) / (
-        1.0 + risk_free_rate
-    )
-    steady_period_factor: float = 0.0
-    for i in range(1, 26):
-        steady_period_factor += steady_geometric_factor**i
+    steady_period_factor: float = (1.0 + terminal_growth_rate) / (risk_free_rate - terminal_growth_rate)
     return (
         current_5yr_net_earnings
         / 5.0

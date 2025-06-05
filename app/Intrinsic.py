@@ -23,14 +23,12 @@ st.markdown(
    the terminal growth rate and the observed growth rate of the 5-year average net earnings
    over the last 10 years.
 
-1. Steady-state of 25 year horizon with a terminal growth rate. This is taken to be the historical growth of the Brazilian
+1. Steady-state with a terminal growth rate. This is taken to be the historical growth of the Brazilian
    economy. 
    For the data backing up this parameter, see: 
    `https://data.worldbank.org/indicator/NY.GDP.MKTP.KD?end=2023&locations=BR&start=1960&view=chart`
 
 *Note 1: if either average earnings is negative, we set intrinsic_value = 0.0*.
-*Note 2: we use a finite investment horizon because it forces much more conservative estimates of intrinsic value, which helps
-balances the usage of book earnings instead of 'owner earnings' as proposed by Buffet. 
 """
 )
 
@@ -38,7 +36,7 @@ st.write("For the mathematically inclined reader, we have:")
 
 st.latex(
     r"""
-    V = \bar{E}_0 \left[\sum_{i=1}^{10} \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^i + \left(1 + \bar{\alpha}\right)^{10}\sum_{i=1}^{25} \left(\frac{1 + \alpha_{\infty}}{1 + \gamma}\right)^i\right],\space \bar{\alpha} = \frac{\alpha_0 + \alpha_\infty}{2}
+    V = \bar{E}_0 \left[\sum_{i=1}^{10} \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^i + \left(1 + \bar{\alpha}\right)^{10}\left[\frac{1 + \alpha_{\infty}}{\gamma - \alpha_{\infty}}\right],\space \bar{\alpha} = \frac{\alpha_0 + \alpha_\infty}{2}
     """
 )
 st.write("where:")

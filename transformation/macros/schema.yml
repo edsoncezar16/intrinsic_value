@@ -8,7 +8,7 @@ macros:
       1. First stage with a 10 years transient period with growth at the arithmetic mean between
       the terminal growth rate and the observed growth rate.
 
-      2. Steady-state of 25 years horizon with the terminal growth rate.
+      2. Steady-state with the terminal growth rate.
 
       If either of average earnings is negative or there is no data to compute, returns 0.0.
     arguments:
