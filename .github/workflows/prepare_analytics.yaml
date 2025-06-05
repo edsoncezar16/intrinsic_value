@@ -8,6 +8,9 @@ on:
       - Ingest Closing Market Data
     types:
       - completed
+  push:
+    paths:
+      - 'transformation/dbt_project.yml'
 
 jobs:
   prepare-analytics:
