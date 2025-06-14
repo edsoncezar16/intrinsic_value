@@ -23,6 +23,7 @@ SELECT
         WHEN company_name = 'NORD' THEN 'NORDON INDS METALURGICAS SA' -- type 3
         WHEN company_name = 'REAGINVEST' THEN 'GETNINJAS' -- type 1
         WHEN company_name = 'RAND' THEN 'RANDON S.A. IMPLEMENTOS E PARTICIPAÇÕES' -- type 3
+        WHEN company_name = 'C' THEN 'CONTAX' -- type 3
         ELSE company_name
     END AS company_name,
     industry,

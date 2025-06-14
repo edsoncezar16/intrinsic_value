@@ -23,7 +23,10 @@ st.warning(
 )
 
 margin_of_safety = st.slider(
-    "Enter you minimum acceptable margin of safety: ", min_value=0.2, max_value=0.5, value=0.2
+    "Enter you minimum acceptable margin of safety: ",
+    min_value=0.2,
+    max_value=0.3,
+    value=0.3,
 )
 
 buy_recommends = recommends(kind="buy", margin_of_safety=margin_of_safety)

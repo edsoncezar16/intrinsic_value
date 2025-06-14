@@ -8,6 +8,7 @@ SELECT
         WHEN company_name = 'Log' THEN 'Log-In'
         WHEN company_name = 'QUERO' THEN 'QUERO-QUERO'
         WHEN company_name = 'CEEE' THEN 'CEEE-D'
+        WHEN company_name = 'ATMASA' THEN 'CONTAX'
         ELSE company_name
     END AS company_name,
     CAST(
