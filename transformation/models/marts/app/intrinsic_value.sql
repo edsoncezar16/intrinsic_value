@@ -31,6 +31,7 @@ SELECT
             intrinsic_value - market_price
         ) / intrinsic_value
         ELSE NULL
-    END AS margin_of_safety as_of
+    END AS margin_of_safety,
+    as_of
 FROM
     baseS
