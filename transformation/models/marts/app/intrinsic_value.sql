@@ -34,4 +34,4 @@ SELECT
     END AS margin_of_safety,
     as_of
 FROM
-    baseS
+    base
