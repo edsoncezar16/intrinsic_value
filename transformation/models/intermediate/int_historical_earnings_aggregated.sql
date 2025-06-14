@@ -1,7 +1,7 @@
 SELECT
     company_name,
     list_aggregate(
-        earnings_history [1:20],
+        earnings_history [-40:-21],
         'sum'
     ) AS past_5yr_earnings,
     list_aggregate(
