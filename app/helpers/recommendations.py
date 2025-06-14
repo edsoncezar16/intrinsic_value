@@ -12,11 +12,9 @@ def recommends(
     ),
 ):
     if kind == "buy":
-        filter_condition = (
-            f"WHERE market_price < intrinsic_value  * {1.0 - margin_of_safety}"
-        )
+        filter_condition = f"WHERE margin_of_safety > {margin_of_safety}"
     elif kind == "sell":
-        filter_condition = "WHERE market_price > intrinsic_value"
+        filter_condition = "WHERE margin_of_safety < 0"
     else:
         raise ValueError("Recommendation kind should be one of 'buy' or 'sell'.")
 
@@ -25,7 +23,7 @@ def recommends(
             SELECT * 
             FROM main_analytics.intrinsic_value
             {filter_condition}
-            ORDER BY intrinsic_value DESC 
+            ORDER BY margin_of_safety DESC 
             """,
         ttl=QUERY_TTL,
     )
