@@ -18,5 +18,8 @@ models:
           The intrinsic value of the company common stock.
       - name: market_price
         description: The market quotation of the company common stock.
+      - name: marging_of_safety
+        description: >
+          The margin of safety for investing in the company at the current price.
       - name: as_of
         description: The date of the value/price comparison of the company common stock.
