@@ -1,6 +1,6 @@
 SELECT
     ticker,
-    company_name,
+    e.company_name,
     industry,
     -- factor of 1000 is to reconcile earnings expressed in thousands of R$
     -- so we should divide by the stocks in thousands of units
