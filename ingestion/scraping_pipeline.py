@@ -38,7 +38,7 @@ def market_data(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any
                 "market_price": market_price,
                 "market_price_date": market_price_date,
             }
-        except dlt.extract.exceptions.ResourceExtractionError as e:
+        except ValueError as e:
             print(f"Failed to extract data for ticker {ticker}: {e}")
             raise e
 
