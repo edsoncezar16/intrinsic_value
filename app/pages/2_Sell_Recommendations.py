@@ -3,6 +3,7 @@ from helpers import recommends
 import pandas as pd
 from io import BytesIO
 
+
 with st.sidebar:
     current_position = st.file_uploader(
         "(Optional) Enter a CSV file with your position in the format (ticker, stocks).",
@@ -19,10 +20,24 @@ st.warning(
     icon="⚠️",
 )
 
+margin_of_safety = st.slider(
+    "Enter you minimum acceptable margin of safety: ",
+    min_value=0.2,
+    max_value=0.5,
+    value=0.5,
+    key="MoS",
+)
+
+gov_bond_rate = st.slider(
+    "Enter the long-term government bond rate: ",
+    min_value=0.02,
+    max_value=0.15,
+    value=0.10,
+    key="GovRate",
+)
+
 sell_recommends = recommends(
-    kind="sell",
-    margin_of_safety=st.session_state["MoS"],
-    gov_bond_rate=st.session_state["GovRate"],
+    kind="sell", margin_of_safety=margin_of_safety, gov_bond_rate=gov_bond_rate
 )
 
 if current_position:
