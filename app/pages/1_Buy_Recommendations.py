@@ -26,16 +26,21 @@ margin_of_safety = st.slider(
     min_value=0.2,
     max_value=0.5,
     value=0.5,
+    key="MoS",
 )
 
 gov_bond_rate = st.slider(
     "Enter the long-term government bond rate: ",
-    min_value=0.02,
+    min_value=0.10,
     max_value=0.15,
-    value=0.10,
+    value=0.1250,
+    step=0.0001,
+    key="GovRate",
 )
 
-buy_recommends = recommends(kind="buy", margin_of_safety=margin_of_safety)
+buy_recommends = recommends(
+    kind="buy", margin_of_safety=margin_of_safety, gov_bond_rate=gov_bond_rate
+)
 
 
 if current_position:

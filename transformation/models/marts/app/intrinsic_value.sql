@@ -4,10 +4,7 @@ SELECT
     industry,
     -- factor of 1000 is to reconcile earnings expressed in thousands of R$
     -- so we should divide by the stocks in thousands of units
-    ROUND(
-        avg_10yr_earnings / market_price * 1000 / n_stocks,
-        2
-    ) AS earnings_power,
+    ROUND((avg_10yr_earnings * 1000 / n_stocks) / market_price, 2) AS earnings_power,
     market_price,
     market_price_date AS as_of
 FROM

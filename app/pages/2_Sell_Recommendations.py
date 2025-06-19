@@ -19,7 +19,11 @@ st.warning(
     icon="⚠️",
 )
 
-sell_recommends = recommends(kind="sell")
+sell_recommends = recommends(
+    kind="sell",
+    margin_of_safety=st.session_state["MoS"],
+    gov_bond_rate=st.session_state["GovRate"],
+)
 
 if current_position:
     position = pd.read_csv(
