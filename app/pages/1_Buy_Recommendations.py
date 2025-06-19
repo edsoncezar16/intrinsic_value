@@ -31,10 +31,9 @@ margin_of_safety = st.slider(
 
 gov_bond_rate = st.slider(
     "Enter the long-term government bond rate: ",
-    min_value=0.10,
+    min_value=0.02,
     max_value=0.15,
-    value=0.1250,
-    step=0.0001,
+    value=0.10,
     key="GovRate",
 )
 
