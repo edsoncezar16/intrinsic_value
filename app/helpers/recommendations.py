@@ -17,7 +17,7 @@ def recommends(
             f"WHERE earnings_power >= {gov_bond_rate} * (1.0 + {margin_of_safety})"
         )
     elif kind == "sell":
-        filter_condition = "WHERE margin_of_safety < 0"
+        filter_condition = f"WHERE earnings_power < {gov_bond_rate}"
     else:
         raise ValueError("Recommendation kind should be one of 'buy' or 'sell'.")
 
