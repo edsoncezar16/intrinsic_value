@@ -20,14 +20,6 @@ st.warning(
     icon="⚠️",
 )
 
-margin_of_safety = st.slider(
-    "Enter you minimum acceptable margin of safety: ",
-    min_value=0.1,
-    max_value=0.5,
-    value=0.5,
-    key="MoS",
-)
-
 gov_bond_rate = st.slider(
     "Enter the long-term government bond rate: ",
     min_value=0.02,
@@ -36,9 +28,7 @@ gov_bond_rate = st.slider(
     key="GovRate",
 )
 
-sell_recommends = recommends(
-    kind="sell", margin_of_safety=margin_of_safety, gov_bond_rate=gov_bond_rate
-)
+sell_recommends = recommends(kind="sell", gov_bond_rate=gov_bond_rate)
 
 if current_position:
     position = pd.read_csv(

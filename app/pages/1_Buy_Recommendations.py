@@ -23,10 +23,9 @@ st.warning(
 
 margin_of_safety = st.slider(
     "Enter you minimum acceptable margin of safety: ",
-    min_value=0.1,
+    min_value=0.2,
     max_value=0.5,
     value=0.5,
-    key="MoS",
 )
 
 gov_bond_rate = st.slider(
@@ -34,7 +33,6 @@ gov_bond_rate = st.slider(
     min_value=0.02,
     max_value=0.15,
     value=0.10,
-    key="GovRate",
 )
 
 buy_recommends = recommends(
