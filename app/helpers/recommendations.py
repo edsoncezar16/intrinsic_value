@@ -26,7 +26,7 @@ def recommends(
             SELECT * 
             FROM main_analytics.intrinsic_value
             {filter_condition}
-            ORDER BY market_price / earnings_power
+            ORDER BY earnings_power DESC
             """,
         ttl=QUERY_TTL,
     )
