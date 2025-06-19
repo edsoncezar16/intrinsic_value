@@ -5,7 +5,7 @@ SELECT
     -- factor of 1000 is to reconcile earnings expressed in thousands of R$
     -- so we should divide by the stocks in thousands of units
     ROUND(
-        past_10yr_earnings / market_price * 1000 / n_stocks,
+        avg_10yr_earnings / market_price * 1000 / n_stocks,
         2
     ) AS earnings_power,
     market_price,

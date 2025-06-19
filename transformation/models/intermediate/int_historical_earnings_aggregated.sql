@@ -3,6 +3,6 @@ SELECT
     list_aggregate(
         earnings_history [-40:-1],
         'sum'
-    ) AS past_10yr_earnings,
+    ) / 10 AS avg_10yr_earnings,
 FROM
     {{ ref('stg_fundamentus__historical_earnings') }}
