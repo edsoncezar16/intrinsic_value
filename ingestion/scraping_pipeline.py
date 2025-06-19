@@ -21,7 +21,7 @@ def market_data(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any
             response = requests.get(FUNDAMENTUS_BASE_URL + ticker)
             soup = BeautifulSoup(response.text, "html.parser")
             all_info = list(
-                map(lambda x: x.text, soup.find_all("span", {"txt": "txt"}))
+                map(lambda x: x.text, soup.find_all("span", {"class": "txt"}))
             )
             company_name = get_relevant_info(all_info, "Empresa").split("ON")[0].strip()
             n_stocks = int(get_relevant_info(all_info, "Nro. Ações").replace(".", ""))
