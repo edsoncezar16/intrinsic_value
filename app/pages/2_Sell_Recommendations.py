@@ -25,7 +25,6 @@ gov_bond_rate = st.slider(
     min_value=0.02,
     max_value=0.15,
     value=0.10,
-    key="GovRate",
 )
 
 sell_recommends = recommends(kind="sell", gov_bond_rate=gov_bond_rate)
