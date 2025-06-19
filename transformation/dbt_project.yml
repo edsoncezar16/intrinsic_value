@@ -4,9 +4,6 @@ config-version: 2
 
 profile: intrinsic
 
-vars:
-  gov_bond_rate: 0.1395
-
 models:
   intrinsic:
     marts:
