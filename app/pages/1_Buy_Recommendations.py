@@ -1,7 +1,6 @@
 import streamlit as st
 from helpers import recommends
 import pandas as pd
-import plotly.express as px
 from io import BytesIO
 
 pd.options.plotting.backend = "plotly"
@@ -25,8 +24,15 @@ st.warning(
 margin_of_safety = st.slider(
     "Enter you minimum acceptable margin of safety: ",
     min_value=0.2,
-    max_value=0.3,
-    value=0.3,
+    max_value=0.5,
+    value=0.5,
+)
+
+gov_bond_rate = st.slider(
+    "Enter the long-term government bond rate: ",
+    min_value=0.2,
+    max_value=0.5,
+    value=0.5,
 )
 
 buy_recommends = recommends(kind="buy", margin_of_safety=margin_of_safety)
@@ -42,27 +48,3 @@ if current_position:
 
 st.write(f"Found {buy_recommends.shape[0]} buy recommendations:")
 st.dataframe(buy_recommends, hide_index=True, height=250)
-
-industry_distribution = buy_recommends.groupby("industry").agg({"ticker": "count"})
-industry_distribution.columns = ["N. Companies"]
-plotted_industry_distribution = industry_distribution.sort_values("N. Companies").tail(
-    5
-)
-
-fig = px.bar(
-    plotted_industry_distribution,
-    y=plotted_industry_distribution.index,
-    x="N. Companies",
-    title="Top 5 Industries in Buy Recommendations",
-    height=40 * len(plotted_industry_distribution),
-)
-
-fig.update_layout(
-    yaxis=dict(
-        tickmode="array",
-        tickvals=plotted_industry_distribution.index,
-    ),
-    margin=dict(l=150, r=20, t=50, b=50),
-)
-
-st.plotly_chart(fig)

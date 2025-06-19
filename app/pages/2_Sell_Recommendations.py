@@ -1,6 +1,5 @@
 import streamlit as st
 from helpers import recommends
-import plotly.express as px
 import pandas as pd
 from io import BytesIO
 
@@ -32,28 +31,3 @@ if current_position:
 
 st.write(f"Found {sell_recommends.shape[0]} sell recommendations:")
 st.dataframe(sell_recommends, hide_index=True, height=250)
-
-industry_distribution = sell_recommends.groupby("industry").agg({"ticker": "count"})
-industry_distribution.columns = ["N. Companies"]
-plotted_industry_distribution = industry_distribution.sort_values("N. Companies").tail(
-    5
-)
-
-fig = px.bar(
-    plotted_industry_distribution,
-    y=plotted_industry_distribution.index,
-    x="N. Companies",
-    orientation="h",
-    title="Top 5 Industries in Sell Recommendations",
-    height=40 * len(plotted_industry_distribution),
-)
-
-fig.update_layout(
-    yaxis=dict(
-        tickmode="array",
-        tickvals=plotted_industry_distribution.index,
-    ),
-    margin=dict(l=150, r=20, t=50, b=50),
-)
-
-st.plotly_chart(fig)

@@ -7,12 +7,15 @@ from .config import QUERY_TTL, CONN_TTL_SECONDS
 def recommends(
     kind: str,
     margin_of_safety: float = 0.5,
+    gov_bond_rate: float = 0.10,
     conn: SQLConnection = st.connection(
         name="intrinsic", type="sql", ttl=CONN_TTL_SECONDS
     ),
 ):
     if kind == "buy":
-        filter_condition = f"WHERE margin_of_safety > {margin_of_safety}"
+        filter_condition = (
+            f"WHERE earnings_power >= {gov_bond_rate} * (1.0 + {margin_of_safety})"
+        )
     elif kind == "sell":
         filter_condition = "WHERE margin_of_safety < 0"
     else:

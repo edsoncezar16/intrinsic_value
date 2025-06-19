@@ -9,13 +9,9 @@ models:
         tests:
           - unique
           - not_null
-      - name: past_5yr_earnings
+      - name: past_10yr_earnings
         description: >
-          The cumulative sum of the company earnings over a 5 year window,
-          starting up to 15 years in the past.
-      - name: current_5yr_earnings
-        description: >
-          The cumulative sum of the company earnings over the latest 5 year window.
+          The cumulative sum of the company earnings over the last 40 quarters year window.
 
   - name: int_market_data_industry_translated
     description: >
