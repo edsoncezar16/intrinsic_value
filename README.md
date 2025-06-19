@@ -4,16 +4,9 @@ A data app to support value investing decisions in the Braziian Stock Exchange.
 
 ## Methodology
 
-Computes the intrinsic value of a company based on a two-stage discounted cash flow,
-as outlined in the book [The Warren Buffet Way](https://www.amazon.com/Warren-Buffett-Way-Third/dp/1118819233).
+Computes the **earnings power of a company**, defined as the **average earnings over the last 10 years divided by its current price**, and recommends buying when there is a **margin of safety** of at least 50% as compared to the yield on long-term government bond, and selling when the above margin of safety is negative.
 
-1. First stage with a 10 years transient period with growth at the arithmetic mean between
-   the terminal growth rate and the observed growth rate of the 5-year average net earnings
-   over the last 10 years.
-
-1. Steady-state with a terminal growth rate. This is taken to be the historical growth of the Brazilian
-   economy. For the data backing up this parameter, see:
-   `https://data.worldbank.org/indicator/NY.GDP.MKTP.KD.ZG?locations=BR`
+For a deep dive on the above concepts, we recommend the reading of [The Intelligent Investor](https://www.amazon.com/Intelligent-Investor-Definitive-Investing-Essentials/dp/0060555661) (especially Chapter 20).
 
 ## Acknowledgements
 
