@@ -11,7 +11,7 @@ on:
     paths:
       - 'transformation/dbt_project.yml'
       - 'transformation/macros/compute_intrinsic_value.sql'
-      - 'transformation/models/*'
+      - 'transformation/models/**'
 
 jobs:
   prepare-analytics:
