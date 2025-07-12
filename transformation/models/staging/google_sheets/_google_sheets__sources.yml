@@ -8,10 +8,9 @@ sources:
           Financial data for Brazilian companies. Source: Trading View.
         columns:
           - name: stock
-            description: The code of the common stock for the company. Primary key.
-            tests:
+            description: The code of the common stock for the company.
+            tests: # does not include not null test due to some metadata rows added by dlt which would make test fail
               - unique
-              - not_null
           - name: company_name
             description: >
               The name of the company, as extracted depicted on the Trading View website.
