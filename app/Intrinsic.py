@@ -80,7 +80,7 @@ if lang_code == "Português (BR)":
     st.markdown(
         """
         O autor agradece aos mantenedores dos sites
-        [Fundamentus](https://www.fundamentus.com.br/index.php) e [TradingView](https://br.tradingview.com), que fornece dados fundamentais estruturados e confiáveis sobre ações brasileiras.
+        [Fundamentus](https://www.fundamentus.com.br/index.php) e [TradingView](https://br.tradingview.com), que fornecem dados fundamentais estruturados e confiáveis sobre ações brasileiras.
         """
     )
 
@@ -156,7 +156,7 @@ else:
     st.markdown(
         """
         The author thanks the maintainers of
-        [Fundamentus](https://www.fundamentus.com.br/index.php) and [TradingView](https://br.tradingview.com), which provides structured access to reliable
+        [Fundamentus](https://www.fundamentus.com.br/index.php) and [TradingView](https://br.tradingview.com), which provide structured access to reliable
         fundamental data for Brazilian equities.
         """
     )
