@@ -4,7 +4,7 @@ from .config import QUERY_TTL, CONN_TTL_SECONDS
 
 
 @st.cache_data(ttl=QUERY_TTL)
-def load_portfolio_data(
+def portfolio_data(
     conn: SQLConnection = st.connection(
         name="intrinsic", type="sql", ttl=CONN_TTL_SECONDS
     ),
