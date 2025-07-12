@@ -7,9 +7,9 @@ WITH base AS (
         -- so we should divide by the stocks in thousands of units
         ROUND(
             {{ compute_intrinsic_value(
-                d = dividends,
-                e = earnings,
-                roe = roe,
+                d = 'dividends',
+                e = 'earnings',
+                roe = 'roe',
                 r = var('risk_free_rate'),
                 gt = var('terminal_growth_rate'),
                 n = var('transient_period')
