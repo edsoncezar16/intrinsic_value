@@ -90,7 +90,7 @@ if lang == "English":
 
     st.markdown(
         """
-        The author thanks the maintainers of [Fundamentus](https://www.fundamentus.com.br/index.php), which provides structured and reliable access to the fundamentals of Brazilian public companies.
+        The author thanks the maintainers of [Fundamentus](https://www.fundamentus.com.br/index.php) and [TradingView](https://br.tradingview.com), which provides structured and reliable access to the fundamentals of Brazilian public companies.
         """
     )
 
@@ -167,6 +167,6 @@ else:
 
     st.markdown(
         """
-        Agradecimentos aos mantenedores do site [Fundamentus](https://www.fundamentus.com.br/index.php), que oferecem acesso estruturado e confiável aos fundamentos das empresas listadas na B3.
+        Agradecimentos aos mantenedores do site [Fundamentus](https://www.fundamentus.com.br/index.php) e do site [TradingView](https://br.tradingview.com), que oferecem acesso estruturado e confiável aos fundamentos das empresas listadas na B3.
         """
     )
