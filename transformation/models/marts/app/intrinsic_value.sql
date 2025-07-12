@@ -7,7 +7,7 @@ WITH base AS (
         -- so we should divide by the stocks in thousands of units
         ROUND(
             {{ compute_intrinsic_value(
-                eanings = 'earnings',
+                earnings = 'earnings',
                 dividends = 'dividends',
                 roe = 'roe',
                 r = var('risk_free_rate'),
