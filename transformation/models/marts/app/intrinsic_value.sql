@@ -13,7 +13,7 @@ WITH base AS (
                 r = var('risk_free_rate'),
                 gt = var('terminal_growth_rate'),
                 n = var('transient_period')
-            ) }}
+            ) }},
             2
         ) AS intrinsic_value,
         market_price,
