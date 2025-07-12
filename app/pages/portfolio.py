@@ -46,12 +46,14 @@ display_df = df[
         "ticker",
         "company_name",
         "market_price",
+        "intrinsic_value",  # <-- NEW
         "margin_of_safety",
         "normalized_weight",
         "shares",
         "total_cost",
     ]
 ].rename(columns=L["columns"])
+
 st.dataframe(display_df, use_container_width=True, hide_index=True)
 
 # ----- Summary -----
