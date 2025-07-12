@@ -1,15 +1,26 @@
 # Intrinsic
 
-A data app to support value investing decisions in the Braziian Stock Exchange.
+A data-driven app to construct value investing portfolios for the Brazilian Stock Exchange, grounded in the principle of **margin of safety**.
 
 ## Methodology
 
-Computes the **earnings power of a company**, defined as the **average earnings over the last 10 years divided by its current price**, and recommends buying when there is a **margin of safety** of at least 50% as compared to the yield on long-term government bond, and selling when the above margin of safety is negative.
+This application:
 
-For a deep dive on the above concepts, we recommend the reading of [The Intelligent Investor](https://www.amazon.com/Intelligent-Investor-Definitive-Investing-Essentials/dp/0060555661) (especially Chapter 20).
+- Computes the **intrinsic value** of stocks using a two-stage **dividend discount model (DDM)**, as outlined in [*Corporate Finance (4th Edition)*](https://www.amazon.com/Corporate-Finance-Stephen-Ross/dp/0078034779) by Ross, Westerfield, and Jaffe.
+- Calculates the **margin of safety** (MoS) as:
+
+```latex
+MoS = 1 - (market_price / intrinsic_value)
+```
+
+- **Filters for stocks with MoS > 50%**, signaling strong undervaluation relative to fundamentals.
+- Assigns portfolio **weights using `2 * MoS - 1`**, emphasizing companies with higher safety margins.
+- Accepts user input for **total capital**, and computes the number of shares to purchase per stock.
+
+The result is a simple yet rigorous portfolio allocation strategy based on conservative valuation principles.
 
 ## Acknowledgements
 
 The author wholeheartedly thanks the maintainers of the
 [Fundamentus](https://www.fundamentus.com.br/index.php) website, which provides easy access to accurate
-and up to date information of the underlying fundamentals of Brazilian companies.
+and up-to-date information on the fundamentals of Brazilian companies.
