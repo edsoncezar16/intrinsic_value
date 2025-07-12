@@ -4,15 +4,14 @@ on:
   workflow_dispatch:
   workflow_run:
     workflows:
-      - Ingest Balance Sheets
-      - Ingest Closing Market Data
+      - Ingest Financial Info
     types:
       - completed
   push:
     paths:
       - 'transformation/dbt_project.yml'
       - 'transformation/macros/compute_intrinsic_value.sql'
-      - 'transformation/models/marts/app/intrinsic_value.sql'
+      - 'transformation/models/*'
 
 jobs:
   prepare-analytics:
@@ -26,7 +25,7 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.10"
+          python-version: "3.12"
 
       - name: Install dependencies
         run: |
