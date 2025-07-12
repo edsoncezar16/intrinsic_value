@@ -3,78 +3,86 @@ import streamlit as st
 st.title("Intrinsic")
 
 st.write(
-    "A data app to support value investing decisions in the Brazilian Stock Exchange."
+    "A portfolio construction tool for value investing on the Brazilian Stock Exchange, based on the concept of margin of safety (MoS)."
 )
-
 
 st.header("Methodology")
 
-
 st.markdown(
     """
-    Computes the intrinsic value of a company based on a two-stage discounted cash flow,
-    as outlined in the book [The Warren Buffet Way](https://www.amazon.com/Warren-Buffett-Way-Third/dp/1118819233). 
+    The app estimates the intrinsic value of stocks based on a **two-stage dividend discount model (DDM)**, as detailed in
+    [*Corporate Finance (4th Edition), by Ross, Westerfield, and Jaffe*](https://www.amazon.com/Corporate-Finance-Stephen-Ross/dp/0078034779).
+    
+    Using intrinsic value estimates and market prices, we compute the **margin of safety (MoS)**:
+
+    $$
+    \\text{MoS} = 1 - \\frac{\\text{Market Price}}{\\text{Intrinsic Value}}
+    $$
+
+    A portfolio is constructed with the following logic:
+
+    - **Only stocks with MoS > 50% are included**
+    - **Portfolio weights are calculated as:**  
+      $$
+      \\text{Weight} = 2 \\times \\text{MoS} - 1
+      $$
+      Stocks with exactly 50% MoS receive zero weight. Higher MoS results in greater allocation.
     """
 )
 
 st.markdown(
     """
-1. First stage with a 10 years transient period with a growth rate of the arithmetic mean between
-   the terminal growth rate and the observed growth rate of the 5-year average net earnings
-   over the last 10 years.
+#### Valuation Formula
 
-1. Steady-state with a terminal growth rate. This is taken to be the historical growth of the Brazilian
-   economy. 
-   For the data backing up this parameter, see: 
-   `https://data.worldbank.org/indicator/NY.GDP.MKTP.KD?end=2023&locations=BR&start=1960&view=chart`
+The intrinsic value formula used is:
 
-*Note: if either average earnings is negative, we set intrinsic_value = 0.0*.
+$$
+V = D_0 \\left[\\sum_{i=1}^{n} \\left(\\frac{1 + g}{1 + r}\\right)^i + \\left(\\frac{1 + g}{1 + r}\\right)^n \\left(\\frac{1 + g_t}{r - g_t}\\right)\\right]
+$$
+
+Where:
+
+$$
+\\def\\arraystretch{1.5}
+\\begin{array}{:c:c:}
+\\hdashline
+V & \\text{Intrinsic Value}  \\\\
+\\hdashline
+D_0 & \\text{Current dividend}  \\\\
+\\hdashline
+g & \\text{Initial growth rate (e.g., ROE * retention)} \\\\
+\\hdashline
+g_t & \\text{Terminal growth rate} \\\\
+\\hdashline
+r & \\text{Required rate of return} \\\\
+\\hdashline
+n & \\text{Years of high growth period} \\\\
+\\hdashline
+\\end{array}
+$$
+
+If either `D_0` or earnings are negative, the intrinsic value is conservatively set to zero.
 """
 )
 
-st.write("For the mathematically inclined reader, we have:")
-
-st.latex(
-    r"""
-    V = \bar{E}_0 \left[\sum_{i=1}^{10} \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^i + \left(\frac{1 + \bar{\alpha}}{1 + \gamma}\right)^{10}\left(\frac{1 + \alpha_\infty}{\gamma - \alpha_\infty}\right)\right],\space \bar{\alpha} = \frac{\alpha_0 + \alpha_\infty}{2}
-    """
-)
-st.write("where:")
-st.latex(
-    r"""
-    \def\arraystretch{1.5}
-    \begin{array}{:c:c:}
-   \hdashline
-    V & \text{Intrinsic Value.}  \\ 
-    \hdashline
-    \bar{E}_0 & \text{Average net earnings over the last 5 years.}  \\
-    \hdashline
-    \alpha_0 & \text{Observed growth rate of the average net earnings over the last 10 years.}\\
-    \hdashline
-    \alpha_\infty & \text{Terminal growth rate of net earnings after the transient period.}\\
-    \hdashline
-    \gamma & \text{Interest rate for cash flow discount.}\\
-    \hdashline
-    \end{array}
-    """
-)
-
 st.markdown(
     """
-    Based on the previous computation and the concept of margin of safety, 
-    we compute buy and sell recommendations as follows:
-    
-    - Buy Recommendations: market_price < (1 - margin_of_safety) * intrinsic_value
-    - Sell Recommendations: market_price > intrinsic_value
-    """
+#### Portfolio Construction Summary
+
+- **Filter**: Stocks must have margin of safety greater than 50%
+- **Weight formula**: `weight = 2 * MoS - 1`
+- **Normalize weights** to sum to 1 across the portfolio
+
+This creates a portfolio that leans heavily on companies with substantial undervaluation relative to their fundamentals.
+"""
 )
 
 st.header("Acknowledgements")
 
 st.markdown(
     """
-    The author wholeheartedly thanks the maintainers of the
-    [Fundamentus](https://www.fundamentus.com.br/index.php) website, which provides easy access to accurate
-    and up to date information of the underlying fundamentals of Brazilian companies.
+    The author thanks the maintainers of
+    [Fundamentus](https://www.fundamentus.com.br/index.php), which provides structured access to reliable
+    fundamental data for Brazilian equities.
     """
 )

@@ -1,30 +1,25 @@
 version: 2
 
 macros:
-  - name: compute_intrinsic_value
+  - name: intrinsic_value
     description: >
-      Computes the intrinsic value of a company based on a two-stage discounted cash flow:
+      Calculates the intrinsic value of a stock using a two-stage Dividend Discount Model (DDM).
 
-      1. First stage with a 10 years transient period with growth at the arithmetic mean between
-      the terminal growth rate and the observed growth rate.
+      If the implied growth rate `g = (1 - d/e) * roe` is less than the terminal growth rate `gt`,
+      the model falls back to the single-stage Gordon Growth Model. Otherwise, it applies a 
+      multi-stage growth model with `n` high-growth years followed by convergence toward a 
+      terminal growth rate with a modified payout ratio.
 
-      2. Steady-state with the terminal growth rate.
-
-      If either of average earnings is negative or there is no data to compute, returns 0.0.
     arguments:
-      - name: past_5yr_net_earnings
-        type: double
-        description: Rolling 20Q window cumulative net earnings ending 40 quarters back.
-      - name: current_5yr_net_earnings
-        type: double
-        description: Rolling 20Q window cumulative net earnings ending on the last quarter.
-      - name: risk_free_rate
-        type: double
-        description: >
-          An interest rate that we could safely achieve if we were to choose a fixed-income investment. 
-          For B3, could be taken as the long-term fixed-income government bond.
-      - name: terminal_growth_rate
-        type: double
-        description: >
-          A very conservative estimate of the long-term growth rate for a company.
-          For B3, could be taken from this -> https://data.worldbank.org/indicator/NY.GDP.MKTP.KD?end=2023&locations=BR&start=1960&view=chart
+      - name: d
+        description: Current dividend per share (float)
+      - name: e
+        description: Current earnings per share (float)
+      - name: roe
+        description: Return on equity as a decimal (float)
+      - name: r
+        description: Required rate of return (float).
+      - name: gt
+        description: Terminal growth rate (float).
+      - name: n
+        description: Number of years in the high-growth stage.

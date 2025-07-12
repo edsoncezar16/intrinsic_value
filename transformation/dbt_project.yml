@@ -5,8 +5,9 @@ config-version: 2
 profile: intrinsic
 
 vars:
-  risk_free_rate: 0.1401
-  terminal_growth_rate: 0.0378
+  risk_free_rate: 0.1235
+  terminal_growth_rate: 0.0727
+  transient_period: 7
 
 models:
   intrinsic:
