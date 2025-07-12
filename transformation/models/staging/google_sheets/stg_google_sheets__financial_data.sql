@@ -11,6 +11,6 @@ SELECT
     )
 FROM
     {{ source(
-        'google_sheets',
+        'trading_view',
         'financial_data'
     ) }}
