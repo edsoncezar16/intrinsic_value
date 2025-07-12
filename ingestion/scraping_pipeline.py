@@ -1,9 +1,8 @@
 import dlt
 from bs4 import BeautifulSoup
 from typing import Iterator, Any
-import dlt.extract
-import dlt.extract.exceptions
 from dlt.sources.helpers import requests
+import time
 
 FUNDAMENTUS_BASE_URL: str = "https://www.fundamentus.com.br/detalhes.php?papel="
 
@@ -18,7 +17,11 @@ def get_relevant_info(all_info: list[str], relevant_info: str) -> str:
 def market_data(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any]]:
     for ticker in tickers:
         try:
-            response = requests.get(FUNDAMENTUS_BASE_URL + ticker)
+            headers = {
+                "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/115.0.0.0 Safari/537.36"
+            }
+            response = requests.get(FUNDAMENTUS_BASE_URL + ticker, headers=headers)
+
             soup = BeautifulSoup(response.text, "html.parser")
             all_info = list(
                 map(lambda x: x.text, soup.find_all("span", {"class": "txt"}))
@@ -38,6 +41,7 @@ def market_data(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any
                 "market_price": market_price,
                 "market_price_date": market_price_date,
             }
+            time.sleep(1)
         except ValueError as e:
             print(f"Failed to extract data for ticker {ticker}: {e}")
             raise e
