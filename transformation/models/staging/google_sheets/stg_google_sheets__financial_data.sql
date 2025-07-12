@@ -1,8 +1,14 @@
 SELECT
     stock,
-    earnings :: FLOAT,
-    dividends :: FLOAT,
-    roe :: FLOAT
+    CAST(
+        dividends AS FLOAT
+    ),
+    CAST(
+        earnings AS FLOAT
+    ),
+    CAST(
+        roe AS FLOAT
+    )
 FROM
     {{ source(
         'google_sheets',
