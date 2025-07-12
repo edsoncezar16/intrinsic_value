@@ -22,7 +22,7 @@ jobs:
           pip install uv
           uv pip install --system -r requirements.txt
 
-      - name: Ingest balance sheets
+      - name: Ingest google sheets
         env:
           SOURCES__GOOGLE_SHEETS__CREDENTIALS__PROJECT_ID: ${{ secrets.GOOGLE_SHEETS_PROJECT_ID }}
           SOURCES__GOOGLE_SHEETS__CREDENTIALS__CLIENT_EMAIL: ${{ secrets.GOOGLE_SHEETS_CLIENT_EMAIL }}
