@@ -1,4 +1,4 @@
-dlt[motherduck,filesystem]>=1.10.0
+dlt[motherduck]>=1.10.0
 duckdb==1.2.2
 streamlit
 xlrd
@@ -8,3 +8,4 @@ beautifulsoup4
 SQLAlchemy
 duckdb-engine
 plotly
+google-api-python-client

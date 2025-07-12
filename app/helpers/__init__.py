@@ -1,6 +1,6 @@
-from .recommendations import recommends
+from .portfolio_data import load_portfolio_data
 
 
 __all__ = [
-    "recommends",
+    "load_portfolio_data",
 ]

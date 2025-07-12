@@ -3,18 +3,6 @@ version: 2
 sources:
   - name: fundamentus
     tables:
-      - name: historical_earnings
-        description: >
-          One record per company. Includes all non-null earnings records from up to 15 years back.
-        columns:
-          - name: company_name
-            description: The name of the company, as extracted from the balance sheet. Primary key.
-            tests:
-              - unique
-              - not_null
-          - name: historical_earnings
-            description: The (json) array of non-null historical eanings of the company over the last 15 years.
-
       - name: market_data
         description: >
           Market price and number of stocks from the previous day.

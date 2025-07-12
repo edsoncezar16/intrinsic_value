@@ -1,0 +1,25 @@
+version: 2
+
+macros:
+  - name: intrinsic_value
+    description: >
+      Calculates the intrinsic value of a stock using a two-stage Dividend Discount Model (DDM).
+
+      If the implied growth rate `g = (1 - d/e) * roe` is less than the terminal growth rate `gt`,
+      the model falls back to the single-stage Gordon Growth Model. Otherwise, it applies a 
+      multi-stage growth model with `n` high-growth years followed by convergence toward a 
+      terminal growth rate with a modified payout ratio.
+
+    arguments:
+      - name: d
+        description: Current dividend per share (float)
+      - name: e
+        description: Current earnings per share (float)
+      - name: roe
+        description: Return on equity as a decimal (float)
+      - name: r
+        description: Required rate of return (float).
+      - name: gt
+        description: Terminal growth rate (float).
+      - name: n
+        description: Number of years in the high-growth stage.
