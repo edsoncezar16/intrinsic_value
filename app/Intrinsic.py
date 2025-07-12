@@ -2,8 +2,20 @@ import streamlit as st
 
 st.set_page_config(page_title="Intrinsic", layout="wide")
 
-# Language selector
-lang = st.selectbox("Language / Idioma", ["English", "Português (BR)"], index=0)
+# Initialize session state with default to Portuguese
+if "lang" not in st.session_state:
+    st.session_state.lang = "Português (BR)"
+
+# Language selector (persistent)
+lang = st.selectbox(
+    "Idioma / Language",
+    ["Português (BR)", "English"],
+    index=["Português (BR)", "English"].index(st.session_state.lang),
+)
+st.session_state.lang = lang
+
+# Define short reference
+L = st.session_state.lang
 
 # --- English content ---
 if lang == "English":
@@ -28,15 +40,15 @@ if lang == "English":
 
         The model distinguishes two valuation regimes based on the implied growth rate:
 
-        - Let \\( g = (1 - d/e) \\cdot ROE \\)
+        - Let \\( g = (1 - d/e)  ROE \\)
 
         - **If** \\( g < g_t \\): use the **Gordon Growth Model**:
 
         $$
-        V = d \\cdot \\frac{1 + g}{r - g}
+        V = d  \\frac{1 + g}{r - g}
         $$
 
-        - **If** \\( g \\geq g_t \\): apply a two-stage DDM with payout scaling:
+        - **If** \\( g >= g_t \\): apply a two-stage DDM with payout scaling:
 
             1. Transient phase: \\( n \\) years of high growth  
             2. Terminal phase: perpetual growth at \\( g_t \\), adjusted for converging payout
@@ -50,8 +62,8 @@ if lang == "English":
         Full formula:
 
         $$
-        V = \\sum_{i=1}^{n} d \\cdot \\left(\\frac{1 + g}{1 + r}\\right)^i
-        + \\left[d \\cdot (1 + g)^n \\cdot \\text{Payout Scale} \\cdot \\frac{1 + g_t}{r - g_t}\\right] \\cdot \\left(\\frac{1}{1 + r}\\right)^n
+        V = \\sum_{i=1}^{n} d  \\left(\\frac{1 + g}{1 + r}\\right)^i
+        + \\left[d  (1 + g)^n  \\text{Payout Scale}  \\frac{1 + g_t}{r - g_t}\\right]  \\left(\\frac{1}{1 + r}\\right)^n
         $$
 
         *Note: If dividends or earnings are negative, intrinsic value is conservatively set to zero.*
@@ -105,15 +117,15 @@ else:
 
         O modelo distingue dois regimes de avaliação com base na taxa de crescimento implícita:
 
-        - Seja \\( g = (1 - d/e) \\cdot ROE \\)
+        - Seja \\( g = (1 - d/e) ROE \\)
 
         - **Se** \\( g < g_t \\): usa-se o **modelo de crescimento perpétuo de Gordon**:
 
         $$
-        V = d \\cdot \\frac{1 + g}{r - g}
+        V = d \\frac{1 + g}{r - g}
         $$
 
-        - **Se** \\( g \\geq g_t \\): aplica-se um modelo de dois estágios com ajuste no payout:
+        - **Se** \\( g >= g_t \\): aplica-se um modelo de dois estágios com ajuste no payout:
 
             1. Fase transitória de \\( n \\) anos com alto crescimento  
             2. Valor terminal com crescimento perpétuo \\( g_t \\), ajustado para convergência no payout
@@ -127,8 +139,8 @@ else:
         Fórmula completa:
 
         $$
-        V = \\sum_{i=1}^{n} d \\cdot \\left(\\frac{1 + g}{1 + r}\\right)^i
-        + \\left[d \\cdot (1 + g)^n \\cdot \\text{Fator de Escala} \\cdot \\frac{1 + g_t}{r - g_t}\\right] \\cdot \\left(\\frac{1}{1 + r}\\right)^n
+        V = \\sum_{i=1}^{n} d  \\left(\\frac{1 + g}{1 + r}\\right)^i
+        + \\left[d  (1 + g)^n  \\text{Fator de Escala}  \\frac{1 + g_t}{r - g_t}\\right]  \\left(\\frac{1}{1 + r}\\right)^n
         $$
 
         *Nota: Caso dividendos ou lucros sejam negativos, o valor intrínseco é fixado em zero por precaução.*

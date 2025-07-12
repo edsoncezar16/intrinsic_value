@@ -2,15 +2,24 @@ import streamlit as st
 import numpy as np
 from helpers import load_portfolio_data
 
-st.set_page_config(page_title="Portfolio Builder", layout="wide")
+st.set_page_config(page_title="Construtor de Portfólio", layout="wide")
 
-# Language selector
-lang = st.selectbox("Language / Idioma", ["English", "Português (BR)"], index=0)
+# Initialize session state language if not set
+if "lang" not in st.session_state:
+    st.session_state.lang = "Português (BR)"
 
-# Load portfolio data
+# Language selector with persistence
+lang = st.selectbox(
+    "Idioma / Language",
+    ["Português (BR)", "English"],
+    index=["Português (BR)", "English"].index(st.session_state.lang),
+)
+st.session_state.lang = lang
+
+# Load data
 df = load_portfolio_data()
 
-# Labels for translations
+# Labels per language
 labels = {
     "English": {
         "title": "Portfolio Builder",
@@ -56,9 +65,9 @@ labels = {
     },
 }
 
-# Current language context
 L = labels[lang]
 
+# Handle no data case
 if df.empty:
     st.warning(L["no_data"])
     st.stop()
@@ -67,12 +76,12 @@ if df.empty:
 df["weight"] = 2 * df["margin_of_safety"] - 1
 df["normalized_weight"] = df["weight"] / df["weight"].sum()
 
-# Capital input
+# User input: total capital
 capital = st.number_input(
     label=L["capital_label"], min_value=0.0, value=10000.0, step=100.0, format="%.2f"
 )
 
-# Allocation mode toggle
+# User input: allocation mode
 allocation_mode = st.radio(
     label=L["toggle_label"],
     options=L["toggle_options"],
@@ -80,38 +89,37 @@ allocation_mode = st.radio(
     horizontal=True,
 )
 
-# Allocation logic
+# Compute allocation
 df["allocated_capital"] = df["normalized_weight"] * capital
 
-if allocation_mode == L["toggle_options"][0]:  # Lot mode
+if allocation_mode == L["toggle_options"][0]:  # Lote de 100 ações
     df["lots"] = np.floor(df["allocated_capital"] / (df["market_price"] * 100))
     df["shares"] = df["lots"] * 100
     st.info(L["info_lot"])
-else:  # Unit mode
+else:  # Ações individuais
     df["shares"] = np.floor(df["allocated_capital"] / df["market_price"])
     st.info(L["info_unit"])
 
 df["total_cost"] = df["shares"] * df["market_price"]
 df["remaining_cash"] = capital - df["total_cost"].sum()
 
-# Display results
+# Display table
 st.title(L["title"])
 st.subheader(L["section_header"])
 
-display_df = df[
-    [
-        "ticker",
-        "company_name",
-        "market_price",
-        "margin_of_safety",
-        "normalized_weight",
-        "shares",
-        "total_cost",
-    ]
-].rename(columns=L["columns"])
+columns = [
+    "ticker",
+    "company_name",
+    "market_price",
+    "margin_of_safety",
+    "normalized_weight",
+    "shares",
+    "total_cost",
+]
 
+display_df = df[columns].rename(columns=L["columns"])
 st.dataframe(display_df, use_container_width=True, hide_index=True)
 
-# Capital summary
+# Summary
 st.markdown(L["capital_used"].format(df["total_cost"].sum()))
 st.markdown(L["cash_remaining"].format(df["remaining_cash"].iloc[0]))
