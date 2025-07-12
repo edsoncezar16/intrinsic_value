@@ -1,88 +1,160 @@
 import streamlit as st
 
-st.title("Intrinsic")
+st.set_page_config(page_title="Intrinsic", layout="wide")
 
-st.write(
-    "A portfolio construction tool for value investing on the Brazilian Stock Exchange, based on the concept of margin of safety (MoS)."
-)
+# Language selector
+lang = st.selectbox("Language / Idioma", ["English", "Português (BR)"], index=0)
 
-st.header("Methodology")
+# --- English content ---
+if lang == "English":
+    st.title("Intrinsic")
 
-st.markdown(
-    """
-    The app estimates the intrinsic value of stocks based on a **two-stage dividend discount model (DDM)**, as detailed in
-    [*Corporate Finance (4th Edition), by Ross, Westerfield, and Jaffe*](https://www.amazon.com/Corporate-Finance-Stephen-Ross/dp/0078034779).
-    
-    Using intrinsic value estimates and market prices, we compute the **margin of safety (MoS)**:
+    st.write(
+        "A portfolio construction tool for value investing on the Brazilian Stock Exchange, based on the principle of margin of safety (MoS)."
+    )
 
-    $$
-    \\text{MoS} = 1 - \\frac{\\text{Market Price}}{\\text{Intrinsic Value}}
-    $$
+    st.header("Methodology")
 
-    A portfolio is constructed with the following logic:
+    st.markdown(
+        """
+        This app estimates the intrinsic value of stocks using a **two-stage dividend discount model (DDM)**, based on the approach presented in
+        [*Corporate Finance (4th Edition)*](https://www.amazon.com/Corporate-Finance-Stephen-Ross/dp/0078034779) by Ross, Westerfield, and Jaffe.
+        
+        The **margin of safety (MoS)** is defined as:
 
-    - **Only stocks with MoS > 50% are included**
-    - **Portfolio weights are calculated as:**  
-      $$
-      \\text{Weight} = 2 \\times \\text{MoS} - 1
-      $$
-      Stocks with exactly 50% MoS receive zero weight. Higher MoS results in greater allocation.
-    """
-)
+        $$
+        \\text{MoS} = 1 - \\frac{\\text{Market Price}}{\\text{Intrinsic Value}}
+        $$
 
-st.markdown(
-    """
-#### Valuation Formula
+        The model distinguishes two valuation regimes based on the implied growth rate:
 
-The intrinsic value formula used is:
+        - Let \\( g = (1 - d/e) \\cdot ROE \\)
 
-$$
-V = D_0 \\left[\\sum_{i=1}^{n} \\left(\\frac{1 + g}{1 + r}\\right)^i + \\left(\\frac{1 + g}{1 + r}\\right)^n \\left(\\frac{1 + g_t}{r - g_t}\\right)\\right]
-$$
+        - **If** \\( g < g_t \\): use the **Gordon Growth Model**:
 
-Where:
+        $$
+        V = d \\cdot \\frac{1 + g}{r - g}
+        $$
 
-$$
-\\def\\arraystretch{1.5}
-\\begin{array}{:c:c:}
-\\hdashline
-V & \\text{Intrinsic Value}  \\\\
-\\hdashline
-D_0 & \\text{Current dividend}  \\\\
-\\hdashline
-g & \\text{Initial growth rate (e.g., ROE * retention)} \\\\
-\\hdashline
-g_t & \\text{Terminal growth rate} \\\\
-\\hdashline
-r & \\text{Required rate of return} \\\\
-\\hdashline
-n & \\text{Years of high growth period} \\\\
-\\hdashline
-\\end{array}
-$$
+        - **If** \\( g \\geq g_t \\): apply a two-stage DDM with payout scaling:
 
-If either `D_0` or earnings are negative, the intrinsic value is conservatively set to zero.
-"""
-)
+            1. Transient phase: \\( n \\) years of high growth  
+            2. Terminal phase: perpetual growth at \\( g_t \\), adjusted for converging payout
 
-st.markdown(
-    """
-#### Portfolio Construction Summary
+        The terminal dividend is scaled to reflect the transition from initial payout \\( 1 - g/ROE \\) to terminal payout \\( 1 - g_t/ROE \\):
 
-- **Filter**: Stocks must have margin of safety greater than 50%
-- **Weight formula**: `weight = 2 * MoS - 1`
-- **Normalize weights** to sum to 1 across the portfolio
+        $$
+        \\text{Payout Scale} = \\frac{1 - g_t / ROE}{1 - g / ROE}
+        $$
 
-This creates a portfolio that leans heavily on companies with substantial undervaluation relative to their fundamentals.
-"""
-)
+        Full formula:
 
-st.header("Acknowledgements")
+        $$
+        V = \\sum_{i=1}^{n} d \\cdot \\left(\\frac{1 + g}{1 + r}\\right)^i
+        + \\left[d \\cdot (1 + g)^n \\cdot \\text{Payout Scale} \\cdot \\frac{1 + g_t}{r - g_t}\\right] \\cdot \\left(\\frac{1}{1 + r}\\right)^n
+        $$
 
-st.markdown(
-    """
-    The author thanks the maintainers of
-    [Fundamentus](https://www.fundamentus.com.br/index.php), which provides structured access to reliable
-    fundamental data for Brazilian equities.
-    """
-)
+        *Note: If dividends or earnings are negative, intrinsic value is conservatively set to zero.*
+        """
+    )
+
+    st.header("Portfolio Construction")
+
+    st.markdown(
+        """
+        Only companies with **margin of safety above 50%** are included.
+
+        Portfolio weights are computed with:
+
+        $$
+        \\text{Weight} = 2 \\times \\text{MoS} - 1
+        $$
+
+        Final weights are normalized to 1, and share counts are based on the user-defined total capital.
+        """
+    )
+
+    st.header("Acknowledgements")
+
+    st.markdown(
+        """
+        The author thanks the maintainers of [Fundamentus](https://www.fundamentus.com.br/index.php), which provides structured and reliable access to the fundamentals of Brazilian public companies.
+        """
+    )
+
+# --- Brazilian Portuguese content ---
+else:
+    st.title("Intrinsic")
+
+    st.write(
+        "Uma ferramenta para construção de portfólios de ações com base na margem de segurança, voltada ao mercado brasileiro."
+    )
+
+    st.header("Metodologia")
+
+    st.markdown(
+        """
+        Este aplicativo estima o **valor intrínseco** das ações utilizando um modelo de **Desconto de Dividendos em Dois Estágios (DDM)**, conforme apresentado no livro
+        [*Corporate Finance – 4ª Edição*](https://www.amazon.com/Corporate-Finance-Stephen-Ross/dp/0078034779), de Ross, Westerfield e Jaffe.
+        
+        A **margem de segurança (MoS)** é calculada como:
+
+        $$
+        \\text{MoS} = 1 - \\frac{\\text{Preço de Mercado}}{\\text{Valor Intrínseco}}
+        $$
+
+        O modelo distingue dois regimes de avaliação com base na taxa de crescimento implícita:
+
+        - Seja \\( g = (1 - d/e) \\cdot ROE \\)
+
+        - **Se** \\( g < g_t \\): usa-se o **modelo de crescimento perpétuo de Gordon**:
+
+        $$
+        V = d \\cdot \\frac{1 + g}{r - g}
+        $$
+
+        - **Se** \\( g \\geq g_t \\): aplica-se um modelo de dois estágios com ajuste no payout:
+
+            1. Fase transitória de \\( n \\) anos com alto crescimento  
+            2. Valor terminal com crescimento perpétuo \\( g_t \\), ajustado para convergência no payout
+
+        O dividendo terminal é ajustado para refletir a transição do payout inicial \\( 1 - g/ROE \\) ao payout terminal \\( 1 - g_t/ROE \\):
+
+        $$
+        \\text{Fator de Escala} = \\frac{1 - g_t / ROE}{1 - g / ROE}
+        $$
+
+        Fórmula completa:
+
+        $$
+        V = \\sum_{i=1}^{n} d \\cdot \\left(\\frac{1 + g}{1 + r}\\right)^i
+        + \\left[d \\cdot (1 + g)^n \\cdot \\text{Fator de Escala} \\cdot \\frac{1 + g_t}{r - g_t}\\right] \\cdot \\left(\\frac{1}{1 + r}\\right)^n
+        $$
+
+        *Nota: Caso dividendos ou lucros sejam negativos, o valor intrínseco é fixado em zero por precaução.*
+        """
+    )
+
+    st.header("Construção do Portfólio")
+
+    st.markdown(
+        """
+        Apenas empresas com **margem de segurança superior a 50%** são incluídas.
+
+        Os pesos do portfólio são calculados com:
+
+        $$
+        \\text{Peso} = 2 \\times \\text{MoS} - 1
+        $$
+
+        Os pesos finais são normalizados para somar 1, e o número de ações a comprar é calculado com base no capital total informado pelo usuário.
+        """
+    )
+
+    st.header("Agradecimentos")
+
+    st.markdown(
+        """
+        Agradecimentos aos mantenedores do site [Fundamentus](https://www.fundamentus.com.br/index.php), que oferecem acesso estruturado e confiável aos fundamentos das empresas listadas na B3.
+        """
+    )
