@@ -63,7 +63,7 @@ if lang == "English":
 
         $$
         V = \\sum_{i=1}^{n} d  \\left(\\frac{1 + g}{1 + r}\\right)^i
-        + \\left[d  (1 + g)^n  \\text{Payout Scale}  \\frac{1 + g_t}{r - g_t}\\right]  \\left(\\frac{1}{1 + r}\\right)^n
+        + \\left[d  (1 + g)^n  (\\text{Payout Scale})  \\frac{1 + g_t}{r - g_t}\\right]  \\left(\\frac{1}{1 + r}\\right)^n
         $$
 
         *Note: If dividends or earnings are negative, intrinsic value is conservatively set to zero.*
@@ -140,7 +140,7 @@ else:
 
         $$
         V = \\sum_{i=1}^{n} d  \\left(\\frac{1 + g}{1 + r}\\right)^i
-        + \\left[d  (1 + g)^n  \\text{Fator de Escala}  \\frac{1 + g_t}{r - g_t}\\right]  \\left(\\frac{1}{1 + r}\\right)^n
+        + \\left[d  (1 + g)^n  (\\text{Fator de Escala})  \\frac{1 + g_t}{r - g_t}\\right]  \\left(\\frac{1}{1 + r}\\right)^n
         $$
 
         *Nota: Caso dividendos ou lucros sejam negativos, o valor intrínseco é fixado em zero por precaução.*
