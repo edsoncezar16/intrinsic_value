@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: trading_view
     tables:
-      - name: financial_data
+      - name: financial_info
         description: >
           Financial data for Brazilian companies. Source: Trading View.
         columns:

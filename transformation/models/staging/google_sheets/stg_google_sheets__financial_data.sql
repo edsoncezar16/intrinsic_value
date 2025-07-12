@@ -12,5 +12,5 @@ SELECT
 FROM
     {{ source(
         'trading_view',
-        'financial_data'
+        'financial_info'
     ) }}
