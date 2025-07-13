@@ -62,6 +62,13 @@ jobs:
           dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
         shell: bash
 
+      - name: Upload manifest artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-manifest
+          path: ./transformation/target/manifest.json
+
+
 
       - name: Python Executable Deploy
         if: steps.prerun.outputs.result == 'pex-deploy'

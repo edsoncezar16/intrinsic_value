@@ -42,25 +42,26 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
       
-      - name: Setup Python
-        if: steps.prerun.outputs.result == 'pex-deploy'
-        uses: actions/setup-python@v5
+      - name: Download manifest
+        id: download-manifest
+        uses: actions/download-artifact@v4
         with:
-          python-version: ${{ env.PYTHON_VERSION }}
+          name: dbt-manifest
+          path: ./transformation/target/
+        continue-on-error: true
       
-        
       - name: Prepare DBT project for deployment
-        if: steps.prerun.outputs.result == 'pex-deploy'
         run: |
-          python -m pip install pip --upgrade
-          pip install -r requirements.txt --upgrade --upgrade-strategy eager
-          cd transformation
-          dbt deps
-          dbt compile
-          cd ..
+          if [ ! -f "./transformation/target/manifest.json" ]; then
+            python -m pip install pip --upgrade
+            pip install -r requirements.txt
+            cd transformation
+            dbt deps
+            dbt compile
+            cd ..
+          fi
           dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
-        shell: bash
-
+        
 
       - name: Python Executable Deploy
         if: steps.prerun.outputs.result == 'pex-deploy'

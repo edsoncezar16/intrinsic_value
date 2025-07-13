@@ -25,7 +25,7 @@ resources = {
 branch_deployment_jobs = [clone_prod.to_job(), drop_prod_clone.to_job()]
 
 motherduck_resource = DuckDBResource(
-    database=f"md:{os.environ.get('MOTHERDUCK_DATABASE', '')}_clone_{os.environ.get('DAGSTER_CLOUD_PULL_REQUEST_ID', '')}?motherduck_token={os.environ.get('MOTHERDUCK_TOKEN')}"
+    database=f"md:prod_{os.environ.get('MOTHERDUCK_DATABASE', '')}?motherduck_token={os.environ.get('MOTHERDUCK_TOKEN')}"
 )
 
 if os.environ.get("DAGSTER_CLOUD_IS_BRANCH_DEPLOYMENT", "") == "1":
