@@ -5,7 +5,6 @@ description = "A data-driven app to construct value investing portfolios for the
 readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
-    "beautifulsoup4>=4.13.4",
     "dagster>=1.11.2",
     "dagster-cloud>=1.11.2",
     "dagster-dbt>=0.27.2",
@@ -21,6 +20,7 @@ dependencies = [
     "psutil>=7.0.0",
     "sqlalchemy>=2.0.41",
     "streamlit>=1.46.1",
+    "yfinance>=0.2.65",
 ]
 
 [tool.dg]

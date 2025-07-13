@@ -6,7 +6,7 @@ from dagster import (
 )
 from dagster_dlt import DagsterDltResource, dlt_assets
 from ingestion.google_sheets_pipeline import financial_source, financial_pipeline
-from ingestion.scraping_pipeline import market_source, market_pipeline
+from ingestion.yfinance_pipeline import market_source, market_pipeline
 from dagster_dlt import DagsterDltTranslator
 from dagster_dlt.translator import DltResourceTranslatorData
 from dagster import AssetSpec, AssetKey

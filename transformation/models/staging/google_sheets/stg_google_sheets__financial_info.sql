@@ -1,5 +1,5 @@
 SELECT
-    stock,
+    stock AS ticker,
     dividends,
     earnings,
     roe

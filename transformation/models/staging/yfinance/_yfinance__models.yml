@@ -1,9 +1,9 @@
 version: 2
 
 models:
-  - name: stg_fundamentus__market_data
+  - name: stg_yfinance__market_info
     description: >
-      Market price and number of stocks from the previous day.
+      Current market price and company info.
     columns:
       - name: ticker
         description: The code of the common stock for the company. Primary key.
@@ -12,13 +12,10 @@ models:
           - not_null
       - name: company_name
         description: >
-          The name of the company, as extracted from the Fundamentus website. Foreing key.
-          Properly adjusted to match the company name extracted from the balance sheet.
+          The short name of the company.
       - name: industry
         description: The industry of the company, in Brazilian Portuguese.
-      - name: n_stocks
-        description: The quantity of common stocks of the company.
       - name: market_price
         description: The market quotation for the company.
       - name: market_price_date
-        description: The (string) date where the end price was market price. Previous day.
+        description: The (string) date of the given market price.

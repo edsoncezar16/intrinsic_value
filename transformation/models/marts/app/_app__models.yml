@@ -2,7 +2,7 @@ version: 2
 
 models:
   - name: intrinsic_value
-    description: Computes the intrinsic value for the company based on its historical earnings.
+    description: Computes the intrinsic value for the companies.
     columns:
       - name: ticker
         description: The code of the common stock for the company. Primary key.
@@ -12,7 +12,7 @@ models:
       - name: company_name
         description: The name of the company.
       - name: industry
-        description: The industry of the company, in English.
+        description: The industry of the company.
       - name: intrinsic_value
         description: >
           The intrinsic value of the company common stock.

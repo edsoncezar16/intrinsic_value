@@ -76,13 +76,7 @@ if lang_code == "Português (BR)":
         Os pesos finais são normalizados para somar 1, e o número de ações a comprar é calculado com base no capital total informado pelo usuário.
         """
     )
-    st.header("Agradecimentos")
-    st.markdown(
-        """
-        O autor agradece aos mantenedores dos sites
-        [Fundamentus](https://www.fundamentus.com.br/index.php) e [TradingView](https://br.tradingview.com), que fornecem dados fundamentais estruturados e confiáveis sobre ações brasileiras.
-        """
-    )
+
 
 else:
     st.title("Intrinsic")
@@ -149,14 +143,5 @@ else:
         $$
 
         Final weights are normalized to 1, and share counts are based on the user-defined total capital.
-        """
-    )
-
-    st.header("Acknowledgements")
-    st.markdown(
-        """
-        The author thanks the maintainers of
-        [Fundamentus](https://www.fundamentus.com.br/index.php) and [TradingView](https://br.tradingview.com), which provide structured access to reliable
-        fundamental data for Brazilian equities.
         """
     )

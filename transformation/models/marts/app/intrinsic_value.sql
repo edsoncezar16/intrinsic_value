@@ -3,8 +3,6 @@ WITH base AS (
         ticker,
         company_name,
         industry,
-        -- factor of 1000 is to reconcile earnings expressed in thousands of R$
-        -- so we should divide by the stocks in thousands of units
         ROUND(
             {{ compute_intrinsic_value(
                 d = 'dividends',
@@ -19,11 +17,8 @@ WITH base AS (
         market_price,
         market_price_date AS as_of
     FROM
-        {{ ref('stg_google_sheets__financial_data') }}
-        f
-        LEFT JOIN {{ ref('int_market_data_industry_translated') }}
-        m
-        ON f.stock = m.ticker
+        {{ ref('stg_google_sheets__financial_info') }}
+        JOIN {{ ref('stg_yfinance__market_info') }} USING ticker
 )
 SELECT
     ticker,
