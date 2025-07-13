@@ -19,6 +19,7 @@ dependencies = [
     "google-api-python-client>=2.176.0",
     "psutil>=7.0.0",
     "sqlalchemy>=2.0.41",
+    "streamlit>=1.46.1",
 ]
 
 [tool.dg]
