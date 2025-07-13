@@ -1,7 +1,7 @@
 version: 2
 
 macros:
-  - name: intrinsic_value
+  - name: compute_intrinsic_value
     description: >
       Calculates the intrinsic value of a stock using a two-stage Dividend Discount Model (DDM).
 
