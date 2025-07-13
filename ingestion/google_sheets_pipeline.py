@@ -1,6 +1,7 @@
 from typing import Sequence
 import dlt
 from ingestion.google_sheets import google_spreadsheet
+from .destination import destination
 
 
 def load_pipeline_with_ranges(
@@ -11,7 +12,7 @@ def load_pipeline_with_ranges(
     """
     pipeline = dlt.pipeline(
         pipeline_name="google_sheets_pipeline",
-        destination="motherduck",
+        destination=destination,
     )
     data = google_spreadsheet(
         spreadsheet_url_or_id=spreadsheet_url_or_id,

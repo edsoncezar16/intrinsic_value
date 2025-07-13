@@ -2,6 +2,7 @@ import dlt
 from typing import Iterator, Any
 from datetime import datetime
 import yfinance as yf
+from .destination import destination
 
 
 @dlt.resource(
@@ -38,7 +39,7 @@ def market_info(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any
 
 market_pipeline = dlt.pipeline(
     pipeline_name="yfinance_pipeline",
-    destination="motherduck",
+    destination=destination,
     dataset_name="yfinance",
     refresh="drop_sources",
 )

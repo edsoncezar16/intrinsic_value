@@ -4,6 +4,7 @@ dagster-cloud>=1.11.2
 dagster-dbt>=0.27.2
 dagster-dg-cli>=1.11.2
 dagster-dlt>=0.27.2
+dagster-duckdb>=0.27.2
 dagster-webserver>=1.11.2
 dbt-core>=1.10.4
 dbt-duckdb>=1.9.4
