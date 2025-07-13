@@ -13,6 +13,8 @@ env:
   ENABLE_FAST_DEPLOYS: 'true'
   PYTHON_VERSION: '3.10'
   DAGSTER_CLOUD_FILE: 'dagster_cloud.yaml'
+  MOTHERDUCK_DATABASE: ${{ secrets.MOTHERDUCK_DATABASE }}
+  MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
 
 jobs:
   dagster_cloud_default_deploy:
@@ -38,6 +40,14 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
+      
+        
+      - name: Compile dbt project
+        run: |
+          cd transformation  # Your dbt project directory
+          dbt deps
+          dbt compile
+        shell: bash
       
           
       - name: Prepare DBT project for deployment
