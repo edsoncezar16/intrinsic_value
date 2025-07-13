@@ -12,3 +12,4 @@ duckdb<1.3.0
 duckdb-engine>=0.17.0
 google-api-python-client>=2.176.0
 psutil>=7.0.0
+yfinance>=0.2.65
