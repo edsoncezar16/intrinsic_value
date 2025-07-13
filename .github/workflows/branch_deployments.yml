@@ -69,22 +69,28 @@ jobs:
           dagster_cloud_file: "$GITHUB_WORKSPACE/$DAGSTER_CLOUD_FILE"
           build_output_dir: "$GITHUB_WORKSPACE/build"
           python_version: "${{ env.PYTHON_VERSION }}"
+      
+      - name: Get branch deployment
+        id: branch-deployment
+        uses: dagster-io/dagster-cloud-action/actions/utils/get_branch_deployment@v0.1
+        with:
+          dagster_cloud_url: ${{ env.DAGSTER_CLOUD_URL }}
        
       
       - name: Clone Motherduck database upon launch
         if: github.event.action != 'closed'
         uses: dagster-io/dagster-cloud-action/actions/utils/run@v0.1
         with:
-          location_name: ${{ matrix.location.name }}
-          deployment: ${{ steps.deploy.outputs.deployment }}
+          location_name: intrinsic-value
+          deployment: ${{ steps.branch-deployment.outputs.deployment }}
           job_name: clone_prod
           
       - name: Delete Motherduck db clone upon PR close
         if: github.event.action == 'closed'
         uses: dagster-io/dagster-cloud-action/actions/utils/run@v0.1
         with:
-          location_name: ${{ matrix.location.name }}
-          deployment: ${{ steps.deploy.outputs.deployment }}
+          location_name: intrinsic-value
+          deployment: ${{ steps.branch-deployment.outputs.deployment }}
           job_name: drop_prod_clone
 
   dagster_cloud_docker_deploy:
