@@ -42,7 +42,7 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
       
-      - name: Setup Python ${{ env.PYTHON_VERSION }}
+      - name: Setup Python
         if: steps.prerun.outputs.result == 'pex-deploy'
         uses: actions/setup-python@v5
         with:
