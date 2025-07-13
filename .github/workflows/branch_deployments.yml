@@ -63,7 +63,7 @@ jobs:
           build_output_dir: "$GITHUB_WORKSPACE/build"
           python_version: "${{ env.PYTHON_VERSION }}"
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
 
   dagster_cloud_docker_deploy:
     name: Docker Deploy
@@ -89,4 +89,4 @@ jobs:
           # env_vars: ${{ toJson(secrets) }}
           organization_id: ${{ secrets.ORGANIZATION_ID }}
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
