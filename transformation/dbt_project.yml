@@ -11,9 +11,19 @@ vars:
 
 models:
   intrinsic:
+    +meta:
+      dagster:
+        group: silver
+        auto_materialize_policy:
+          type: eager
     marts:
       +materialized: table
       +schema: analytics
+      +meta:
+        dagster:
+          group: gold
+          auto_materialize_policy:
+            type: eager
     intermediate:
       +schema: intermediate
     staging:
@@ -21,3 +31,8 @@ models:
 seeds:
   intrinsic:
     +schema: seeds
+    +meta:
+      dagster:
+        group: bronze
+        auto_materialize_policy:
+          type: eager

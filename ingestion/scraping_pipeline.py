@@ -13,7 +13,12 @@ def get_relevant_info(all_info: list[str], relevant_info: str) -> str:
     return all_info[index + 1]
 
 
-@dlt.resource(standalone=True, max_table_nesting=0, write_disposition="replace")
+@dlt.resource(
+    standalone=True,
+    max_table_nesting=0,
+    write_disposition="replace",
+    name="market_data",
+)
 def market_data(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any]]:
     for ticker in tickers:
         try:
@@ -47,15 +52,21 @@ def market_data(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any
             raise e
 
 
-def scrape_fundamentus() -> None:
-    pipeline = dlt.pipeline(
-        pipeline_name="fundamentus_scraping_pipeline",
-        destination="motherduck",
-        dataset_name="fundamentus",
-        refresh="drop_sources",
-    )
+market_pipeline = dlt.pipeline(
+    pipeline_name="fundamentus_scraping_pipeline",
+    destination="motherduck",
+    dataset_name="fundamentus",
+    refresh="drop_sources",
+)
 
-    load_info = pipeline.run(market_data())
+
+@dlt.source(name="fundamentus")
+def market_source():
+    yield market_data()
+
+
+def scrape_fundamentus() -> None:
+    load_info = market_pipeline.run(market_data())
 
     print(load_info)
 

@@ -1,11 +1,2 @@
-dlt[motherduck]>=1.10.0
-duckdb==1.2.2
 streamlit
-xlrd
-dbt-core
-dbt-duckdb
-beautifulsoup4
-SQLAlchemy
-duckdb-engine
-plotly
-google-api-python-client
+pandas

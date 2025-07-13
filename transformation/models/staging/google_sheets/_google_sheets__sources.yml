@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: trading_view
+  - name: google_spreadsheet
     tables:
       - name: financial_info
         description: >
