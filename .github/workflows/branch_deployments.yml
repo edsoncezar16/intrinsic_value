@@ -42,21 +42,18 @@ jobs:
           ref: ${{ github.head_ref }}
       
         
-      - name: Compile dbt project
-        run: |
-          cd transformation  # Your dbt project directory
-          dbt deps
-          dbt compile
-        shell: bash
-      
-          
       - name: Prepare DBT project for deployment
         if: steps.prerun.outputs.result == 'pex-deploy'
         run: |
           python -m pip install pip --upgrade
           pip install -r requirements.txt --upgrade --upgrade-strategy eager
+          cd transformation
+          dbt deps
+          dbt compile
+          cd ..
           dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
         shell: bash
+
 
       - name: Python Executable Deploy
         if: steps.prerun.outputs.result == 'pex-deploy'
