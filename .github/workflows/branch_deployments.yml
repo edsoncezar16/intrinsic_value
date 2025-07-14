@@ -114,6 +114,7 @@ jobs:
       
       - name: Get branch deployment
         id: branch-deployment
+        if: github.event.action != 'synchronize'
         uses: dagster-io/dagster-cloud-action/actions/utils/get_branch_deployment@v0.1
         with:
           dagster_cloud_url: ${{ env.DAGSTER_CLOUD_URL }}
