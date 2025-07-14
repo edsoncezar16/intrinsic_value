@@ -17,7 +17,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
   DBT_TARGET_PATH: transformation/target
   DBT_MANIFEST_S3_BUCKET: intrinsic-value-dbt-manifests
-  DBT_MANIFEST_S3_PREFIX: ${{ github.head_ref }}
+  DBT_MANIFEST_S3_PREFIX: ${{ github.event.action == 'open' && 'main' || github.head_ref }}
 
 jobs:
   dagster_cloud_default_deploy:
