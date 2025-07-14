@@ -1,8 +1,8 @@
 WITH base AS (
     SELECT
-        ticker,
-        company_name,
-        industry,
+        f.ticker,
+        m.company_name,
+        m.industry,
         ROUND(
             {{ compute_intrinsic_value(
                 d = 'dividends',
@@ -18,7 +18,10 @@ WITH base AS (
         market_price_date AS as_of
     FROM
         {{ ref('stg_google_sheets__financial_info') }}
-        LEFT JOIN {{ ref('stg_yfinance__market_info') }} USING ticker
+        f
+        LEFT JOIN {{ ref('stg_yfinance__market_info') }}
+        m
+        ON f.ticker = m.ticker
 )
 SELECT
     ticker,
