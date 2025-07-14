@@ -78,7 +78,8 @@ jobs:
         
       - name: Download manifest
         run: |
-          aws s3 cp "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json" "${{ env.DBT_TARGET_PATH }}/manifest.json
+          mkdir -p "${{ env.DBT_TARGET_PATH }}"
+          aws s3 cp "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json" "${{ env.DBT_TARGET_PATH }}/manifest.json"
 
       
       - name: Prepare dbt project for deployment
