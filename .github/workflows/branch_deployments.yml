@@ -120,7 +120,7 @@ jobs:
        
       
       - name: Clone Motherduck database upon launch
-        if: github.event.action != 'closed'
+        if: github.event.action == 'opened' || github.event.action == 'reopened'
         uses: dagster-io/dagster-cloud-action/actions/utils/run@v0.1
         with:
           location_name: intrinsic-value
