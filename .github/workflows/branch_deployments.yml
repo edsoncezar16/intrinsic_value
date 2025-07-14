@@ -15,6 +15,9 @@ env:
   PYTHON_VERSION: '3.12'
   DAGSTER_CLOUD_FILE: 'dagster_cloud.yaml'
   GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
+  DBT_TARGET_PATH: transformation/target
+  DBT_MANIFEST_S3_BUCKET: intrinsic-value-dbt-manifests
+  DBT_MANIFEST_S3_PREFIX: ${{ github.event.name }} == "push" && ${{ github.ref_name }} || ${{ github.head_ref }}
 
 jobs:
   dagster_cloud_default_deploy:
@@ -38,7 +41,9 @@ jobs:
       - name: Checkout for Python Executable Deploy
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          path: '.'
 
       - name: Set up Python and cache dependencies
         uses: actions/setup-python@v5
@@ -50,11 +55,59 @@ jobs:
         run: |
           python -m pip install pip --upgrade
           pip install -r requirements.txt
+
+      - name: Check for dbt changes
+        id: dbt-changes
+        run: |
+          if git diff-tree --no-commit-id --name-only -r "$COMMIT_SHA" | grep -q "^transformation"; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "dbt project has been modified, so this job will recompile it."
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No dbt project changes: manifest will be downloaded from remote storage."
+          fi
+        shell: bash
+        env:
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+
+        
+      - name: Download manifest
+        if: steps.dbt-changes.outputs.changed == 'false'
+        run: |
+          mkdir -p "${{ env.DBT_TARGET_PATH }}"
+          aws s3 cp "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ env.DBT_MANIFEST_S3_PREFIX }}/manifest.json" "${{ env.DBT_TARGET_PATH }}/manifest.json" "${{ env.DBT_TARGET_PATH }}/manifest.json"
+
       
       - name: Prepare dbt project for deployment
         id: prepare-dbt
         run: |
-          dagster-dbt project prepare-and-package --file "$GITHUB_WORKSPACE/orchestration/defs/transformation.py"
+          if [[ ! -f "./transformation/target/manifest.json" ]]; then
+            echo "Compiling dbt because manifest is missing or code changed"
+            cd transformation
+            dbt deps
+            dbt compile
+            test -f target/manifest.json || (echo "manifest.json not found after compile" && exit 1)
+            cd ..
+            echo "compiled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Using cached manifest"
+            echo "compiled=false" >> "$GITHUB_OUTPUT"
+          fi
+          dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
+        shell: bash
+
+      - name: Upload manifest artifact
+        if: steps.prepare-dbt.outputs.compiled == 'true'
+        run: |
+          aws s3 cp "${{ env.DBT_TARGET_PATH }}/manifest.json" "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ env.DBT_MANIFEST_S3_PREFIX }}/manifest.json" "${{ env.DBT_TARGET_PATH }}/manifest.json"
+
       - name: Python Executable Deploy
         if: steps.prerun.outputs.result == 'pex-deploy'
         uses: dagster-io/dagster-cloud-action/actions/build_deploy_python_executable@v0.1
