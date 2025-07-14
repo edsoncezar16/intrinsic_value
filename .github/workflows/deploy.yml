@@ -18,7 +18,7 @@ env:
   GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
   DBT_TARGET_PATH: transformation/target
   DBT_MANIFEST_S3_BUCKET: intrinsic-value-dbt-manifests
-  DBT_MANIFEST_S3_PREFIX: ${{ github.event.name }} == "push" && ${{ github.ref_name }} || ${{ github.head_ref }}
+  DBT_MANIFEST_S3_PREFIX: ${{ github.ref_name }}
  
 jobs:
   dagster_cloud_default_deploy:
@@ -40,12 +40,9 @@ jobs:
           dagster_cloud_file: $DAGSTER_CLOUD_FILE
 
       - name: Checkout for Python Executable Deploy
-        if: steps.prerun.outputs.result == 'pex-deploy'
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.ref_name }}
-          path: '.'
-      
+          ref: ${{ github.ref_name }}      
 
       
       - name: Set up Python and cache dependencies
@@ -71,28 +68,12 @@ jobs:
         run: |
           mkdir -p "${{ env.DBT_TARGET_PATH }}"
           aws s3 cp "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ env.DBT_MANIFEST_S3_PREFIX }}/manifest.json" "${{ env.DBT_TARGET_PATH }}/manifest.json"
-        continue-on-error: true
-      - name: Prepare dbt project for deployment
-        id: prepare-dbt
-        run: |
-          if [[ ! -f "./transformation/target/manifest.json" ]]; then
-            echo "Compiling dbt because manifest is missing"
-            cd transformation
-            dbt deps
-            dbt compile
-            test -f target/manifest.json || (echo "manifest.json not found after compile" && exit 1)
-            cd ..
-            echo "compiled=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "Using cached manifest"
-            echo "compiled=false" >> "$GITHUB_OUTPUT"
-          fi
-          dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
-        shell: bash
 
+      - name: Prepare dbt project for deployment
+        run: |
+          dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
       
       - name: Upload manifest artifact
-        if: steps.prepare-dbt.outputs.compiled == 'true'
         run: |
           aws s3 cp "${{ env.DBT_TARGET_PATH }}/manifest.json" s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ env.DBT_MANIFEST_S3_PREFIX }}/manifest.json"
 
