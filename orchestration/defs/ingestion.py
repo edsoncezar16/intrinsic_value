@@ -33,7 +33,9 @@ class CustomDagsterDltTranslator(DagsterDltTranslator):
     dagster_dlt_translator=CustomDagsterDltTranslator(),
 )
 def dagster_financial_assets(context: AssetExecutionContext, dlt: DagsterDltResource):
-    yield from dlt.run(context=context)
+    yield from dlt.run(
+        context=context, dataset_name="google_sheets", table_name="financial_info"
+    )
 
 
 @dlt_assets(

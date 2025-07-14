@@ -5,7 +5,7 @@ SELECT
     roe
 FROM
     {{ source(
-        'google_spreadsheet',
+        'google_sheets',
         'financial_info'
     ) }}
 WHERE
