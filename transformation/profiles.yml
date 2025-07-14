@@ -1,7 +1,15 @@
 intrinsic:
   outputs:
+    prod:
+      type: duckdb
+      path: "md:prod_{{env_var('MOTHERDUCK_DATABASE', '')}}?motherduck_token={{env_var('MOTHERDUCK_TOKEN', '')}}"
+      threads: 4
+    branch:
+      type: duckdb
+      path: "md:{{env_var('MOTHERDUCK_DATABASE', '')}}_clone_{{env_var('DAGSTER_CLOUD_PULL_REQUEST_ID', '')}}?motherduck_token={{env_var('MOTHERDUCK_TOKEN')}}"
+      threads: 4
     dev:
       type: duckdb
-      path: "md:{{env_var('MOTHERDUCK_DATABASE')}}?motherduck_token={{env_var('MOTHERDUCK_TOKEN')}}"
-      threads: 4
-  target: dev
+      path: "{{env_var('MOTHERDUCK_DATABASE', '')}}.duckdb"
+
+  target: "{{env_var('DBT_TARGET', 'dev')}}"

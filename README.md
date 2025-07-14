@@ -43,9 +43,3 @@ weight = 2 * MoS - 1
 This ensures a zero weight at exactly 50% MoS, increasing linearly with higher safety margins.
 
 - Accepts user input for **total capital**, and computes how many shares to buy per company based on price and portfolio weight.
-
-## Acknowledgements
-
-The author wholeheartedly thanks the maintainers of the
-[Fundamentus](https://www.fundamentus.com.br/index.php) website, which provides easy access to accurate
-and up-to-date information on the fundamentals of Brazilian companies.

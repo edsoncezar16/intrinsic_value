@@ -9,12 +9,14 @@ concurrency:
   cancel-in-progress: true
 env:
   DAGSTER_CLOUD_URL: "http://datavillas.dagster.plus"
+  ORGANIZATION_ID: datavillas
   DAGSTER_CLOUD_API_TOKEN: ${{ secrets.DAGSTER_CLOUD_API_TOKEN }}
   ENABLE_FAST_DEPLOYS: 'true'
-  PYTHON_VERSION: '3.10'
+  PYTHON_VERSION: '3.12'
   DAGSTER_CLOUD_FILE: 'dagster_cloud.yaml'
-  MOTHERDUCK_DATABASE: ${{ secrets.MOTHERDUCK_DATABASE }}
-  MOTHERDUCK_TOKEN: ${{ secrets.MOTHERDUCK_TOKEN }}
+  GITHUB_TOKEN: ${{ secrets.CI_GITHUB_TOKEN }}
+  DBT_TARGET_PATH: transformation/target
+  DBT_MANIFEST_S3_BUCKET: intrinsic-value-dbt-manifests
 
 jobs:
   dagster_cloud_default_deploy:
@@ -39,21 +41,69 @@ jobs:
         if: steps.prerun.outputs.result == 'pex-deploy'
         uses: actions/checkout@v3
         with:
-          ref: ${{ github.head_ref }}
-      
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+          path: .
+
+      - name: Set up Python and cache dependencies
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
         
-      - name: Prepare DBT project for deployment
-        if: steps.prerun.outputs.result == 'pex-deploy'
+      - name: Install Python dependencies
         run: |
           python -m pip install pip --upgrade
-          pip install -r requirements.txt --upgrade --upgrade-strategy eager
-          cd transformation
-          dbt deps
-          dbt compile
-          cd ..
-          dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
-        shell: bash
+          pip install -r requirements.txt
 
+      - name: Check for dbt changes
+        id: dbt-changes
+        run: |
+          if git diff-tree --no-commit-id --name-only -r "$COMMIT_SHA" | grep -q "^transformation"; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "dbt project has been modified, so this job will recompile it."
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No dbt project changes: manifest will be downloaded from remote storage."
+          fi
+        shell: bash
+        env:
+          COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+        
+      - name: Download manifest
+        if: steps.dbt-changes.outputs.changed == 'false'
+        run: |
+          mkdir -p "${{ env.DBT_TARGET_PATH }}"
+          aws s3 cp "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json" "${{ env.DBT_TARGET_PATH }}/manifest.json"
+
+      
+      - name: Prepare dbt project for deployment
+        id: prepare-dbt
+        run: |
+          if [[ ! -f "./transformation/target/manifest.json" ]]; then
+            echo "Compiling dbt because manifest is missing or code changed"
+            cd transformation
+            dbt deps
+            dbt compile
+            cd ..
+            echo "compiled=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "Using cached manifest"
+            echo "compiled=false" >> "$GITHUB_OUTPUT"
+          fi
+          dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
+
+      - name: Upload manifest artifact
+        if: steps.prepare-dbt.outputs.compiled == 'true'
+        run: |
+          aws s3 cp "${{ env.DBT_TARGET_PATH }}/manifest.json" s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json"
 
       - name: Python Executable Deploy
         if: steps.prerun.outputs.result == 'pex-deploy'
@@ -62,8 +112,30 @@ jobs:
           dagster_cloud_file: "$GITHUB_WORKSPACE/$DAGSTER_CLOUD_FILE"
           build_output_dir: "$GITHUB_WORKSPACE/build"
           python_version: "${{ env.PYTHON_VERSION }}"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      
+      - name: Get branch deployment
+        id: branch-deployment
+        if: github.event.action != 'synchronize'
+        uses: dagster-io/dagster-cloud-action/actions/utils/get_branch_deployment@v0.1
+        with:
+          dagster_cloud_url: ${{ env.DAGSTER_CLOUD_URL }}
+       
+      
+      - name: Clone Motherduck database upon launch
+        if: github.event.action == 'opened' || github.event.action == 'reopened'
+        uses: dagster-io/dagster-cloud-action/actions/utils/run@v0.1
+        with:
+          location_name: intrinsic-value
+          deployment: ${{ steps.branch-deployment.outputs.deployment }}
+          job_name: clone_prod
+          
+      - name: Delete Motherduck db clone upon PR close
+        if: github.event.action == 'closed'
+        uses: dagster-io/dagster-cloud-action/actions/utils/run@v0.1
+        with:
+          location_name: intrinsic-value
+          deployment: ${{ steps.branch-deployment.outputs.deployment }}
+          job_name: drop_prod_clone
 
   dagster_cloud_docker_deploy:
     name: Docker Deploy
@@ -82,11 +154,7 @@ jobs:
       - name: Build and deploy to Dagster Cloud serverless
         uses: dagster-io/dagster-cloud-action/actions/serverless_branch_deploy@v0.1
         with:
-          dagster_cloud_api_token: ${{ secrets.DAGSTER_CLOUD_API_TOKEN }}
+          dagster_cloud_api_token: ${{ env.DAGSTER_CLOUD_API_TOKEN }}
           location: ${{ toJson(matrix.location) }}
           base_image: "python:${{ env.PYTHON_VERSION }}-slim"
-          # Uncomment to pass through Github Action secrets as a JSON string of key-value pairs
-          # env_vars: ${{ toJson(secrets) }}
-          organization_id: ${{ secrets.ORGANIZATION_ID }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          organization_id: ${{ env.ORGANIZATION_ID }}

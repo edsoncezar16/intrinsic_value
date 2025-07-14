@@ -24,15 +24,5 @@ models:
           group: gold
           auto_materialize_policy:
             type: eager
-    intermediate:
-      +schema: intermediate
     staging:
       +schema: staging
-seeds:
-  intrinsic:
-    +schema: seeds
-    +meta:
-      dagster:
-        group: bronze
-        auto_materialize_policy:
-          type: eager
