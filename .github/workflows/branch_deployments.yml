@@ -70,7 +70,7 @@ jobs:
         uses: keithweaver/aws-s3-github-action@v1.0.0
         with:
           command: cp
-          source: "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.ref_name }}/manifest.json"
+          source: "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json"
           destination: ${{ env.DBT_MANIFEST_LOCAL_PATH }}
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -99,7 +99,7 @@ jobs:
         with:
           command: cp
           source: ${{ env.DBT_MANIFEST_LOCAL_PATH }}
-          destination: "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.ref_name }}/manifest.json"
+          destination: "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json"
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-east-1
