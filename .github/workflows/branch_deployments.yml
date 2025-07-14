@@ -57,9 +57,11 @@ jobs:
 
       - name: Check for dbt changes
         id: dbt-changes
+        env:
+          COMMIT_SHA: ${{ github.sha }}
         run: |
           git fetch origin main
-          if git diff --name-only origin/main...HEAD | grep -q '^transformation/'; then
+          if [[ $(git diff-tree --no-commit-id --name-only -r $COMMIT_SHA | grep ^transformation)]]; then
             echo "changed=true" >> $GITHUB_OUTPUT
           else
             echo "changed=false" >> $GITHUB_OUTPUT
