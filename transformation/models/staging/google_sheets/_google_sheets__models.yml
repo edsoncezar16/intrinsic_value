@@ -3,7 +3,7 @@ version: 2
 models:
   - name: stg_google_sheets__financial_info
     description: >
-      Financial data for Brazilian companies. Source: Trading View.
+      Financial data for Brazilian companies.
     columns:
       - name: ticker
         description: The code of the common stock for the company. Primary key.
