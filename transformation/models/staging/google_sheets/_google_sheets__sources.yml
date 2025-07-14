@@ -5,7 +5,7 @@ sources:
     tables:
       - name: financial_info
         description: >
-          Financial data for Brazilian companies. Source: Trading View.
+          Financial data for Brazilian companies.
         columns:
           - name: stock
             description: The code of the common stock for the company.
