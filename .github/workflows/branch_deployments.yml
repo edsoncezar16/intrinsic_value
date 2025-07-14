@@ -92,6 +92,7 @@ jobs:
             echo "compiled=true" >> "$GITHUB_OUTPUT"
           else
             echo "Using cached manifest"
+            chmod -R u+rw transformation/target
             echo "compiled=false" >> "$GITHUB_OUTPUT"
           fi
           dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
