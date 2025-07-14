@@ -69,22 +69,17 @@ jobs:
         env:
           COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
 
-      - name: Download manifest to tmp # to overcome permission issues
-        if: steps.dbt-changes.outputs.changed == 'false'
-        uses: keithweaver/aws-s3-github-action@v1.0.0
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
         with:
-          command: cp
-          source: "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json"
-          destination: "/tmp/manifest.json"
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: us-east-1
-      
-      - name: Copy manifest to expected location # to overcome permission issues
-        if: steps.dbt-changes.outputs.changed == 'false'
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-1
+        
+      - name: Download manifest
         run: |
-          mkdir -p $DBT_TARGET_PATH
-          cp /tmp/manifest.json ${DBT_TARGET_PATH}/manifest.json
+          aws s3 cp "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json" "${{ env.DBT_TARGET_PATH }}/manifest.json
+
       
       - name: Prepare dbt project for deployment
         id: prepare-dbt
@@ -104,14 +99,8 @@ jobs:
 
       - name: Upload manifest artifact
         if: steps.prepare-dbt.outputs.compiled == 'true'
-        uses: keithweaver/aws-s3-github-action@v1.0.0
-        with:
-          command: cp
-          source: "${{ env.DBT_TARGET_PATH }}/manifest.json"
-          destination: "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json"
-          aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          aws_region: us-east-1
+        run: |
+          aws s3 cp "${{ env.DBT_TARGET_PATH }}/manifest.json" s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json"
 
       - name: Python Executable Deploy
         if: steps.prerun.outputs.result == 'pex-deploy'
