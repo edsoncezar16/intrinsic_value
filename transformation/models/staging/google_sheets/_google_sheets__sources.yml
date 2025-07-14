@@ -9,8 +9,9 @@ sources:
         columns:
           - name: stock
             description: The code of the common stock for the company.
-            tests: # does not include not null test due to some metadata rows added by dlt which would make test fail
+            tests:
               - unique
+              - not_null
           - name: company
             description: >
               The name of the company, as depicted on the Trading View website.
