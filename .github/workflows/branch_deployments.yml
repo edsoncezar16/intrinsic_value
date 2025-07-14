@@ -75,17 +75,22 @@ jobs:
           mkdir -p $DBT_TARGET_PATH
           chmod -R u+rw $DBT_TARGET_PATH
 
-      - name: Download manifest
+      - name: Download manifest to tmp # to overcome permission issues
         if: steps.dbt-changes.outputs.changed == 'false'
         uses: keithweaver/aws-s3-github-action@v1.0.0
         with:
           command: cp
           source: "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json"
-          destination: "${{ env.DBT_TARGET_PATH }}/manifest.json"
+          destination: "/tmp/manifest.json"
           aws_access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws_region: us-east-1
-        continue-on-error: true
+      
+      - name: Copy manifest to expected location # to overcome permission issues
+        if: steps.dbt-changes.outputs.changed == 'false'
+        run: |
+          mkdir -p $DBT_TARGET_PATH
+          cp /tmp/manifest.json ${DBT_TARGET_PATH}/manifest.json
       
       - name: Prepare dbt project for deployment
         id: prepare-dbt
