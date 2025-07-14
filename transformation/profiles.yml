@@ -6,7 +6,7 @@ intrinsic:
       threads: 4
     branch:
       type: duckdb
-      path: "md:{{env_var('MOTHERDUCK_DATABASE', '')}}_clone_{{env_var(DAGSTER_CLOUD_PULL_REQUEST_ID, '')}}?motherduck_token={{env_var('MOTHERDUCK_TOKEN')}}"
+      path: "md:{{env_var('MOTHERDUCK_DATABASE', '')}}_clone_{{env_var('DAGSTER_CLOUD_PULL_REQUEST_ID', '')}}?motherduck_token={{env_var('MOTHERDUCK_TOKEN')}}"
       threads: 4
     dev:
       type: duckdb
