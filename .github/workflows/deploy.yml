@@ -64,6 +64,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
+      
         
       - name: Download manifest
         run: |
@@ -78,6 +79,7 @@ jobs:
             cd transformation
             dbt deps
             dbt compile
+            test -f target/manifest.json || (echo "manifest.json not found after compile" && exit 1)
             cd ..
             echo "compiled=true" >> "$GITHUB_OUTPUT"
           else
