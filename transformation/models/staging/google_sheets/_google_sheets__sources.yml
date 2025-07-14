@@ -1,7 +1,7 @@
 version: 2
 
 sources:
-  - name: google_sheets
+  - name: google_spreadsheet
     tables:
       - name: financial_info
         description: >

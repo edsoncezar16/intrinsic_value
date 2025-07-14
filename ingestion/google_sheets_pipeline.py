@@ -38,7 +38,7 @@ financial_pipeline = dlt.pipeline(
     pipeline_name="google_sheets_pipeline",
     destination=destination,
     progress="log",
-    dataset_name="google_sheets",
+    dataset_name="google_spreadsheet",
 )
 
 if __name__ == "__main__":
