@@ -17,5 +17,5 @@ elif deployment == "prod":
     )
 else:  # branch deployment
     destination = motherduck(
-        credentials=f"md:{os.environ.get('MOTHERDUCK_DATABASE')}_clone_{os.environ.get('DAGSTER_CLOUD_PR_ID')}?motherduck_token={os.environ.get('MOTHERDUCK_TOKEN', '')}"
+        credentials=f"md:{os.environ.get('MOTHERDUCK_DATABASE')}_clone_{os.environ.get('DAGSTER_CLOUD_PULL_REQUEST_ID')}?motherduck_token={os.environ.get('MOTHERDUCK_TOKEN', '')}"
     )

@@ -35,7 +35,7 @@ financial_source = google_spreadsheet(
 )
 
 financial_pipeline = dlt.pipeline(
-    pipeline_name="google_sheets_pipeline", destination="motherduck", progress="log"
+    pipeline_name="google_sheets_pipeline", destination=destination, progress="log"
 )
 
 if __name__ == "__main__":

@@ -18,7 +18,7 @@ WITH base AS (
         market_price_date AS as_of
     FROM
         {{ ref('stg_google_sheets__financial_info') }}
-        JOIN {{ ref('stg_yfinance__market_info') }} USING ticker
+        LEFT JOIN {{ ref('stg_yfinance__market_info') }} USING ticker
 )
 SELECT
     ticker,
