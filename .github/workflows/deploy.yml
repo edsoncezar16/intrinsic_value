@@ -75,7 +75,7 @@ jobs:
       
       - name: Upload manifest artifact
         run: |
-          aws s3 cp "${{ env.DBT_TARGET_PATH }}/manifest.json" s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ env.DBT_MANIFEST_S3_PREFIX }}/manifest.json"
+          aws s3 cp "${{ env.DBT_TARGET_PATH }}/manifest.json" "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ env.DBT_MANIFEST_S3_PREFIX }}/manifest.json"
 
       - name: Python Executable Deploy
         if: steps.prerun.outputs.result == 'pex-deploy'
