@@ -69,12 +69,6 @@ jobs:
         env:
           COMMIT_SHA: ${{ github.event.pull_request.head.sha }}
 
-      - name: Ensure permissions for downloaded manifest
-        if: steps.dbt-changes.outputs.changed == 'false'
-        run: |
-          mkdir -p $DBT_TARGET_PATH
-          chmod -R u+rw $DBT_TARGET_PATH
-
       - name: Download manifest to tmp # to overcome permission issues
         if: steps.dbt-changes.outputs.changed == 'false'
         uses: keithweaver/aws-s3-github-action@v1.0.0
