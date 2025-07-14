@@ -60,8 +60,10 @@ jobs:
         run: |
           if git diff-tree --no-commit-id --name-only -r "$COMMIT_SHA" | grep -q "^transformation"; then
             echo "changed=true" >> "$GITHUB_OUTPUT"
+            echo "dbt project has been modified, so this job will recompile it."
           else
             echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "No dbt project changes: manifest will be downloaded from remote storage."
           fi
         shell: bash
         env:
@@ -78,7 +80,7 @@ jobs:
           aws_region: us-east-1
         continue-on-error: true
       
-      - name: Prepare DBT project for deployment
+      - name: Prepare dbt project for deployment
         id: prepare-dbt
         run: |
           if [[ ! -f "./transformation/target/manifest.json" ]]; then

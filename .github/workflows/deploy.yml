@@ -69,7 +69,7 @@ jobs:
           aws_region: us-east-1
         continue-on-error: true
 
-      - name: Prepare DBT project for deployment
+      - name: Prepare dbt project for deployment
         id: prepare-dbt
         run: |
           if [[ ! -f "./transformation/target/manifest.json" ]]; then
