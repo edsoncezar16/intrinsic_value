@@ -68,20 +68,20 @@ jobs:
         run: |
           mkdir -p "${{ env.DBT_TARGET_PATH }}"
           aws s3 cp "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json" "${{ env.DBT_TARGET_PATH }}/manifest.json"
-       
+        continue-on-error: true
       - name: Prepare dbt project for deployment
         id: prepare-dbt
         run: |
           if [[ ! -f "./transformation/target/manifest.json" ]]; then
-            echo "Compiling DBT because manifest is missing"
+            echo "Compiling dbt because manifest is missing"
             cd transformation
             dbt deps
             dbt compile
             cd ..
-            echo "compiled=true" >> $GITHUB_OUTPUT
+            echo "compiled=true" >> "$GITHUB_OUTPUT"
           else
             echo "Using cached manifest"
-            echo "compiled=false" >> $GITHUB_OUTPUT
+            echo "compiled=false" >> "$GITHUB_OUTPUT"
           fi
           dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
       

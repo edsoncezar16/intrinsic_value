@@ -77,6 +77,7 @@ jobs:
           aws-region: us-east-1
         
       - name: Download manifest
+        if: steps.dbt-changes.outputs.changed == 'false'
         run: |
           mkdir -p "${{ env.DBT_TARGET_PATH }}"
           aws s3 cp "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json" "${{ env.DBT_TARGET_PATH }}/manifest.json"
@@ -86,7 +87,7 @@ jobs:
         id: prepare-dbt
         run: |
           if [[ ! -f "./transformation/target/manifest.json" ]]; then
-            echo "Compiling DBT because manifest is missing or code changed"
+            echo "Compiling dbt because manifest is missing or code changed"
             cd transformation
             dbt deps
             dbt compile
