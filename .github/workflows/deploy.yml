@@ -43,32 +43,48 @@ jobs:
         with:
           ref: ${{ github.head_ref }}
       
-      - name: Setup Python
-        if: steps.prerun.outputs.result == 'pex-deploy'
+
+      
+      - name: Set up Python and cache dependencies
         uses: actions/setup-python@v5
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-    
-
-      - name: Prepare DBT project for deployment
-        if: steps.prerun.outputs.result == 'pex-deploy'
+          cache: 'pip'
+        
+      - name: Install Python dependencies
         run: |
           python -m pip install pip --upgrade
-          pip install -r requirements.txt --upgrade --upgrade-strategy eager
-          cd transformation
-          dbt deps
-          dbt compile
-          cd ..
-          dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
-        shell: bash
+          pip install -r requirements.txt
+  
+      - name: Download manifest
+        id: download-manifest
+        uses: actions/download-artifact@v4
+        with:
+          name: dbt-manifest
+          path: ./transformation/target/
+        continue-on-error: true
 
+      - name: Prepare DBT project for deployment
+        id: prepare-dbt
+        run: |
+          if [[ ! -f "./transformation/target/manifest.json" ]]; then
+            echo "Compiling DBT because manifest is missing"
+            cd transformation
+            dbt deps
+            dbt compile
+            cd ..
+            echo "compiled=true" >> $GITHUB_OUTPUT
+          else
+            echo "Using cached manifest"
+            echo "compiled=false" >> $GITHUB_OUTPUT
+          fi
+          dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
       - name: Upload manifest artifact
+        if: steps.prepare-dbt.outputs.compiled == 'true'
         uses: actions/upload-artifact@v4
         with:
           name: dbt-manifest
           path: ./transformation/target/manifest.json
-
-
 
       - name: Python Executable Deploy
         if: steps.prerun.outputs.result == 'pex-deploy'

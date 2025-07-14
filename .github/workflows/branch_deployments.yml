@@ -41,9 +41,31 @@ jobs:
         uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
-      
+
+      - name: Set up Python and cache dependencies
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+          cache: 'pip'
+        
+      - name: Install Python dependencies
+        run: |
+          python -m pip install pip --upgrade
+          pip install -r requirements.txt
+
+      - name: Check for dbt changes
+        id: dbt-changes
+        run: |
+          git fetch origin main
+          if git diff --name-only origin/main...HEAD | grep -q '^transformation/'; then
+            echo "changed=true" >> $GITHUB_OUTPUT
+          else
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Download manifest
         id: download-manifest
+        if: steps.dbt-changes.outputs.changed == 'false'
         uses: actions/download-artifact@v4
         with:
           name: dbt-manifest
@@ -51,17 +73,27 @@ jobs:
         continue-on-error: true
       
       - name: Prepare DBT project for deployment
+        id: prepare-dbt
         run: |
-          if [ ! -f "./transformation/target/manifest.json" ]; then
-            python -m pip install pip --upgrade
-            pip install -r requirements.txt
+          if [[ ! -f "./transformation/target/manifest.json" ]]; then
+            echo "Compiling DBT because manifest is missing or code changed"
             cd transformation
             dbt deps
             dbt compile
             cd ..
+            echo "compiled=true" >> $GITHUB_OUTPUT
+          else
+            echo "Using cached manifest"
+            echo "compiled=false" >> $GITHUB_OUTPUT
           fi
           dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
-        
+
+      - name: Upload manifest artifact
+        if: steps.prepare-dbt.outputs.compiled == 'true'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dbt-manifest
+          path: ./transformation/target/manifest.json
 
       - name: Python Executable Deploy
         if: steps.prerun.outputs.result == 'pex-deploy'
