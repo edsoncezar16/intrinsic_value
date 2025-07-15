@@ -20,12 +20,8 @@ class CustomDagsterDltTranslator(DagsterDltTranslator):
     def get_asset_spec(self, data: DltResourceTranslatorData) -> AssetSpec:
         """Overrides asset spec to override asset deps to be none and improve asset keys."""
         default_spec = super().get_asset_spec(data)
-        if "C" in data.resource.name:
-            resource_name = "params_table"
-        else:
-            resource_name = "financial_info"
         return default_spec.replace_attributes(
-            deps=[], key=AssetKey(["google_sheets", resource_name])
+            deps=[], key=AssetKey(["google_sheets", data.resource.name])
         )
 
 
