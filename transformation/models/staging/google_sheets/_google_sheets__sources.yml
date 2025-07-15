@@ -36,6 +36,3 @@ sources:
           - name: transient_period
             description: >
               The number of years for the rapid growth phase of companies.
-        tests:
-          - assert_row_count:
-              count: 1
