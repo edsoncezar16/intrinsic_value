@@ -1,11 +1,5 @@
 from pathlib import Path
-from dagster_dbt import (
-    DbtCliResource,
-    DbtProject,
-    dbt_assets,
-    DagsterDbtTranslator,
-    DagsterDbtTranslatorSettings,
-)
+from dagster_dbt import DbtCliResource, DbtProject, dbt_assets, DagsterDbtTranslator
 import dagster as dg
 from typing import Mapping, Any, Optional
 
@@ -29,9 +23,7 @@ intrinsic_project.prepare_if_dev()
 
 @dbt_assets(
     manifest=intrinsic_project.manifest_path,
-    dagster_dbt_translator=CustomDagsterDbtTranslator(
-        settings=DagsterDbtTranslatorSettings(enable_source_tests_as_checks=True)
-    ),
+    dagster_dbt_translator=CustomDagsterDbtTranslator(),
 )
 def intrinsic_dbt_assets(context: dg.AssetExecutionContext, dbt: DbtCliResource):
     yield from dbt.cli(["build"], context=context).stream()
