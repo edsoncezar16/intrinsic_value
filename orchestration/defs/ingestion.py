@@ -13,14 +13,20 @@ from ingestion.google_sheets_pipeline import (
 from ingestion.yfinance_pipeline import market_source, market_pipeline
 from dagster_dlt import DagsterDltTranslator
 from dagster_dlt.translator import DltResourceTranslatorData
-from dagster import AssetSpec
+from dagster import AssetSpec, AssetKey
 
 
 class CustomDagsterDltTranslator(DagsterDltTranslator):
     def get_asset_spec(self, data: DltResourceTranslatorData) -> AssetSpec:
-        """Overrides asset spec to override asset deps."""
+        """Overrides asset spec to override asset deps to be none and improve asset keys."""
         default_spec = super().get_asset_spec(data)
-        return default_spec.replace_attributes(deps=[])
+        if "C" in data.resource.name:
+            resource_name = "params_table"
+        else:
+            resource_name = "financial_info"
+        return default_spec.replace_attributes(
+            deps=[], key=AssetKey(["google_sheets", resource_name])
+        )
 
 
 @dlt_assets(
