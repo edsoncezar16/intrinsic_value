@@ -1,6 +1,5 @@
 SELECT
     ticker,
-    company_name,
     industry,
     market_price,
     market_price_date

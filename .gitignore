@@ -4,5 +4,6 @@
 __pycache__/
 transformation/logs/
 transformation/target/
+transformation/dbt_packages/
 app/.streamlit/
 *.duckdb

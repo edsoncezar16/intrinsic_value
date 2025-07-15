@@ -21,3 +21,18 @@ sources:
             description: The average dividends of the company over the last 7 years.
           - name: roe
             description: The average return on equity of the company over the last 7 years.
+
+      - name: model_params
+        description: >
+          Parameters for usage in intrinsic value modeling.
+        columns:
+          - name: discount_rate
+            description: >
+              The discount rate for the company dividends.
+          - name: terminal_growth_rate
+            description: >
+              The sustainable growth rate that rapid growth company can realistically
+              sustain in the long run.
+          - name: transient_period
+            description: >
+              The number of years for the rapid growth phase of companies.

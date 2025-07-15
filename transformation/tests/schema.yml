@@ -1,0 +1,6 @@
+version: 2
+data_tests:
+  - name: model_params_row_countt_is_one
+    description: >
+      Model params should have a single row containing the values
+      of the parameters of the dividend discount model.
