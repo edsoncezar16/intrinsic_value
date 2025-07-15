@@ -5,7 +5,11 @@ from dagster import (
     ScheduleDefinition,
 )
 from dagster_dlt import DagsterDltResource, dlt_assets
-from ingestion.google_sheets_pipeline import financial_source, financial_pipeline
+from ingestion.google_sheets_pipeline import (
+    financial_source,
+    financial_pipeline,
+    table_names,
+)
 from ingestion.yfinance_pipeline import market_source, market_pipeline
 from dagster_dlt import DagsterDltTranslator
 from dagster_dlt.translator import DltResourceTranslatorData
@@ -16,28 +20,24 @@ class CustomDagsterDltTranslator(DagsterDltTranslator):
     def get_asset_spec(self, data: DltResourceTranslatorData) -> AssetSpec:
         """Overrides asset spec to override asset deps to be none and improve asset keys."""
         default_spec = super().get_asset_spec(data)
-        if "Sheet" in data.resource.name:
-            resource_name = "financial_info"
-            source_name = "google_sheets"
+        if "C" in data.resource.name:
+            resource_name = "params_table"
         else:
-            source_name = data.resource.source_name
-            resource_name = data.resource.name
+            resource_name = "financial_info"
         return default_spec.replace_attributes(
-            deps=[], key=AssetKey([source_name, resource_name])
+            deps=[], key=AssetKey(["google_sheets", resource_name])
         )
 
 
 @dlt_assets(
-    dlt_source=financial_source.with_resources("Sheet1A4E300"),
+    dlt_source=financial_source.with_resources(*table_names),
     dlt_pipeline=financial_pipeline,
     name="financial_ingestion",
     group_name="bronze",
     dagster_dlt_translator=CustomDagsterDltTranslator(),
 )
 def dagster_financial_assets(context: AssetExecutionContext, dlt: DagsterDltResource):
-    yield from dlt.run(
-        context=context, dataset_name="google_sheets", table_name="financial_info"
-    )
+    yield from dlt.run(context=context, dataset_name="google_sheets")
 
 
 @dlt_assets(

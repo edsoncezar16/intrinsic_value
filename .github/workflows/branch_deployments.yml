@@ -70,6 +70,7 @@ jobs:
       - name: Prepare dbt project for deployment
         run: |
           dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
+      
       - name: Upload manifest artifact
         run: |
           aws s3 cp "${{ env.DBT_TARGET_PATH }}/manifest.json" "s3://${{ env.DBT_MANIFEST_S3_BUCKET }}/${{ github.head_ref }}/manifest.json"

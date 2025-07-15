@@ -8,9 +8,9 @@ WITH base AS (
                 d = 'dividends',
                 e = 'earnings',
                 roe = 'roe',
-                r = var('risk_free_rate'),
-                gt = var('terminal_growth_rate'),
-                n = var('transient_period')
+                r = 'discount_rate',
+                gt = 'terminal_growth_rate',
+                n = 'transient_period'
             ) }},
             2
         ) AS intrinsic_value,
@@ -22,6 +22,7 @@ WITH base AS (
         LEFT JOIN {{ ref('stg_yfinance__market_info') }}
         m
         ON f.ticker = m.ticker
+        CROSS JOIN {{ ref('stg_google_sheets__model_params') }}
 )
 SELECT
     ticker,
