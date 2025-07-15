@@ -15,11 +15,6 @@ def market_info(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any
     for ticker in tickers:
         try:
             info: dict = yf.Ticker(f"{ticker}.SA").info
-            try:
-                short_name: str = info.get("shortName", "")
-                company_name: str = short_name.split(" ")[0]
-            except IndexError:
-                company_name: str = ticker
             market_price: float = info.get("regularMarketPrice", -1.0)
             market_price_date: str = datetime.fromtimestamp(
                 info.get("regularMarketTime", 0.0)
@@ -27,7 +22,6 @@ def market_info(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any
             industry = info.get("industry", "")
             yield {
                 "ticker": ticker,
-                "company_name": company_name,
                 "industry": industry,
                 "market_price": market_price,
                 "market_price_date": market_price_date,

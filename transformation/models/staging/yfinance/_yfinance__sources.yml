@@ -12,9 +12,6 @@ sources:
             tests:
               - unique
               - not_null
-          - name: company_name
-            description: >
-              The short name of the company.
           - name: industry
             description: The industry of the company.
           - name: market_price

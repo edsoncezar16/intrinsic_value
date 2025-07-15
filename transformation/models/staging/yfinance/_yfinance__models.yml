@@ -10,9 +10,6 @@ models:
         tests:
           - unique
           - not_null
-      - name: company_name
-        description: >
-          The short name of the company.
       - name: industry
         description: The industry of the company, in Brazilian Portuguese.
       - name: market_price

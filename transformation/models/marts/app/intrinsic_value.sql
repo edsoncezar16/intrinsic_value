@@ -1,7 +1,7 @@
 WITH base AS (
     SELECT
         f.ticker,
-        m.company_name,
+        f.company_name,
         m.industry,
         ROUND(
             {{ compute_intrinsic_value(
@@ -14,8 +14,8 @@ WITH base AS (
             ) }},
             2
         ) AS intrinsic_value,
-        market_price,
-        market_price_date AS as_of
+        m.market_price,
+        m.market_price_date AS as_of
     FROM
         {{ ref('stg_google_sheets__financial_info') }}
         f
