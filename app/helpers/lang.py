@@ -11,7 +11,7 @@ def get_labels():
             "toggle_options": ["Standard B3 lots (100 shares)", "Individual shares"],
             "info_lot": "Note: Share quantities are rounded down to the nearest lot of 100 shares, as per standard B3 trading rules.",
             "info_unit": "Note: Share quantities are rounded down to the nearest individual share.",
-            "section_header": "Suggested Portfolio",
+            "section_header": "Suggested Portfolio ({} assets)",
             "columns": {
                 "ticker": "Ticker",
                 "company_name": "Company",
@@ -33,7 +33,7 @@ def get_labels():
             "toggle_options": ["Lotes padrão da B3 (100 ações)", "Ações individuais"],
             "info_lot": "Nota: A quantidade de ações é arredondada para baixo ao lote de 100 ações, conforme padrão da B3.",
             "info_unit": "Nota: A quantidade de ações é arredondada para baixo à unidade.",
-            "section_header": "Portfólio Sugerido",
+            "section_header": "Portfólio Sugerido ({} ativos)",
             "columns": {
                 "ticker": "Ticker",
                 "company_name": "Empresa",

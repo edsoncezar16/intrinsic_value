@@ -40,7 +40,7 @@ df["total_cost"] = df["shares"] * df["market_price"]
 df["remaining_cash"] = capital - df["total_cost"].sum()
 
 # ----- Display Table -----
-st.subheader(L["section_header"])
+st.subheader(L["section_header"].format(df.shape[0]))
 display_df = df[
     [
         "ticker",
