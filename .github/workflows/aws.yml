@@ -29,15 +29,16 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches: [ "main" ]
+    paths: [ ".github/workflows/aws.yml", "app/**" , "Dockerfile"]
 
 env:
-  AWS_REGION: sa-east-1                   # set this to your preferred AWS region, e.g. us-west-1
-  ECR_REPOSITORY: datavillas/intrinsic-value          # set this to your Amazon ECR repository name
-  ECS_SERVICE: intrinsic-value-service                 # set this to your Amazon ECS service name
-  ECS_CLUSTER: intrinsic-value-cluster                 # set this to your Amazon ECS cluster name
+  AWS_REGION: us-east-2 # set this to your preferred AWS region, e.g. us-west-1
+  ECR_REPOSITORY: datavillas/intrinsic-value  # set this to your Amazon ECR repository name
+  ECS_SERVICE: intrinsic-value-service  # set this to your Amazon ECS service name
+  ECS_CLUSTER: intrinsic-value-cluster # set this to your Amazon ECS cluster name
   ECS_TASK_DEFINITION: intrinsic-value # set this to the name of your Amazon ECS task definition
-  CONTAINER_NAME: intrinsic-value           # set this to the name of the container in the
-                                              # containerDefinitions section of your task definition
+  CONTAINER_NAME: intrinsic-value # set this to the name of the container in the 
+                                  # containerDefinitions section of your task definition
 
 permissions:
   contents: read

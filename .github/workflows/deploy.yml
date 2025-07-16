@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - "main"
+    paths-ignore: [ ".github/workflows/aws.yml", ".github/workflows/branch_deployments.yml", "app/**"  ]
 
 concurrency:
   # Cancel in-progress deploys to same branch
