@@ -29,7 +29,6 @@ name: Deploy to Amazon ECS
 on:
   push:
     branches: [ "main" ]
-    paths: [ "app/**" ]
 
 env:
   AWS_REGION: sa-east-1                   # set this to your preferred AWS region, e.g. us-west-1
@@ -93,7 +92,7 @@ jobs:
         image: ${{ steps.build-image.outputs.image }}
 
     - name: Deploy Amazon ECS task definition
-      uses: aws-actions/amazon-ecs-deploy-task-definition@v1
+      uses: aws-actions/amazon-ecs-deploy-task-definition@v2
       with:
         task-definition: ${{ steps.task-def.outputs.task-definition }}
         service: ${{ env.ECS_SERVICE }}
