@@ -24,8 +24,12 @@ class CustomDagsterDltTranslator(DagsterDltTranslator):
             source_name = "google_sheets"
         else:
             source_name = data.resource.source_name
+
         return default_spec.replace_attributes(
-            deps=[], key=AssetKey([source_name, data.resource.name])
+            deps=[]
+            if data.resource.name == "financial_info"
+            else [AssetKey(["google_sheets", "financial_info"])],
+            key=AssetKey([source_name, data.resource.name]),
         )
 
 
