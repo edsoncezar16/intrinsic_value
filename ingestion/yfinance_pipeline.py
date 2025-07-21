@@ -14,7 +14,7 @@ from .google_sheets_pipeline import financial_source
 )
 def market_info(financial_item) -> Iterator[dict[str, Any]]:
     try:
-        ticker: str = financial_item["ticker"]
+        ticker: str = financial_item["stock"]
         info: dict = yf.Ticker(f"{ticker}.SA").info
         market_price: float = info.get("regularMarketPrice", -1.0)
         market_price_date: str = datetime.fromtimestamp(
