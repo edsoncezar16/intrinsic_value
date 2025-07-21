@@ -18,17 +18,19 @@ from dagster import AssetSpec, AssetKey
 
 class CustomDagsterDltTranslator(DagsterDltTranslator):
     def get_asset_spec(self, data: DltResourceTranslatorData) -> AssetSpec:
-        """Overrides asset spec to override asset deps to be none and improve asset keys."""
+        """Overrides asset spec to override asset deps and improve asset keys."""
         default_spec = super().get_asset_spec(data)
         if "google" in data.resource.source_name:
             source_name = "google_sheets"
         else:
             source_name = data.resource.source_name
+        if data.resource.name == "market_info":
+            deps = [AssetKey(["google_sheets", "financial_info"])]
+        else:
+            deps = []
 
         return default_spec.replace_attributes(
-            deps=[]
-            if data.resource.name == "financial_info"
-            else [AssetKey(["google_sheets", "financial_info"])],
+            deps=deps,
             key=AssetKey([source_name, data.resource.name]),
         )
 
