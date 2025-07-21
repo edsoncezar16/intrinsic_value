@@ -3,32 +3,33 @@ from typing import Iterator, Any
 from datetime import datetime
 import yfinance as yf
 from .destination import destination
+from .google_sheets_pipeline import financial_source
 
 
-@dlt.resource(
-    standalone=True,
+@dlt.transformer(
+    data_from=financial_source.resources["financial_info"],
     max_table_nesting=0,
     write_disposition="replace",
     name="market_info",
 )
-def market_info(tickers: list[str] = dlt.config.value) -> Iterator[dict[str, Any]]:
-    for ticker in tickers:
-        try:
-            info: dict = yf.Ticker(f"{ticker}.SA").info
-            market_price: float = info.get("regularMarketPrice", -1.0)
-            market_price_date: str = datetime.fromtimestamp(
-                info.get("regularMarketTime", 0.0)
-            ).strftime("%Y-%m-%d")
-            industry = info.get("industry", "")
-            yield {
-                "ticker": ticker,
-                "industry": industry,
-                "market_price": market_price,
-                "market_price_date": market_price_date,
-            }
-        except ValueError as e:
-            print(f"Failed to extract data for ticker {ticker}: {e}")
-            raise e
+def market_info(financial_item) -> Iterator[dict[str, Any]]:
+    try:
+        ticker: str = financial_item["Stock"]
+        info: dict = yf.Ticker(f"{ticker}.SA").info
+        market_price: float = info.get("regularMarketPrice", -1.0)
+        market_price_date: str = datetime.fromtimestamp(
+            info.get("regularMarketTime", 0.0)
+        ).strftime("%Y-%m-%d")
+        industry = info.get("industry", "")
+        yield {
+            "ticker": ticker,
+            "industry": industry,
+            "market_price": market_price,
+            "market_price_date": market_price_date,
+        }
+    except ValueError as e:
+        print(f"Failed to extract data for ticker {ticker}: {e}")
+        raise e
 
 
 market_pipeline = dlt.pipeline(
