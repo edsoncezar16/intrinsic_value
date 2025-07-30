@@ -17,7 +17,7 @@ def portfolio_data(
         """
             SELECT * 
             FROM main_analytics.intrinsic_value
-            WHERE margin_of_safety > 0.5
+            WHERE ISFINITE(margin_of_safety) AND margin_of_safety > 0.5
             ORDER BY margin_of_safety DESC 
             """,
         ttl=QUERY_TTL,
