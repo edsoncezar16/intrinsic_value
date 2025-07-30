@@ -21,6 +21,8 @@ dependencies = [
     "yfinance>=0.2.65",
 ]
 
+packages = []
+
 [tool.dg]
 directory_type = "project"
 
