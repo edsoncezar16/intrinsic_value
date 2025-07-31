@@ -23,11 +23,7 @@ dependencies = [
 
 [build-system]
 requires = ["hatchling"]
-build-backend = "hatchling.build"
-
-[tool.setuptools.packages.find]
-where = ["."]
-include = ["orchestration*"]
+build-backend = "hatchling.build
 
 [tool.dg]
 directory_type = "project"
