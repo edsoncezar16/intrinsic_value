@@ -44,17 +44,15 @@ jobs:
         with:
           ref: ${{ github.head_ref}}
 
-      - name: Set up Python and cache dependencies
-        uses: actions/setup-python@v5
+      - name: Install the latest version of uv
+        uses: astral-sh/setup-uv@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-          cache: 'pip'
         
-      - name: Install Python dependencies
+      - name: Install Python dependencies and generate requirements.txt
         run: |
-          python -m pip install pip --upgrade
-          pip install .
-          pip freeze > requirements.txt
+          uv sync
+          uv pip compile --output-file requirements.txt pyproject.toml
         shell: bash
 
       - name: Configure AWS credentials
@@ -72,7 +70,7 @@ jobs:
 
       - name: Prepare dbt project for deployment
         run: |
-          dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
+          uv run dagster-dbt project prepare-and-package --file orchestration/defs/transformation.py
       
       - name: Upload manifest artifact
         run: |
