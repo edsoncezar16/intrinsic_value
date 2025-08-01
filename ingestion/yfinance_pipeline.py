@@ -16,7 +16,7 @@ def market_info(financial_item) -> Iterator[dict[str, Any]]:
     try:
         ticker: str = financial_item["Stock"]
         info: dict = yf.Ticker(f"{ticker}.SA").info
-        market_price: float = info.get("regularMarketPrice", -1.0)
+        market_price: float = info.get("regularMarketPreviousClose", -1.0)
         market_price_date: str = datetime.fromtimestamp(
             info.get("regularMarketTime", 0.0)
         ).strftime("%Y-%m-%d")
