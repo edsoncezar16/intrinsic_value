@@ -1,7 +1,7 @@
 WITH base AS (
     SELECT
         f.ticker,
-        f.company_name,
+        m.company_name,
         m.industry,
         ROUND(
             {{ compute_intrinsic_value(

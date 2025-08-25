@@ -20,9 +20,11 @@ def market_info(financial_item) -> Iterator[dict[str, Any]]:
         market_price_date: str = datetime.fromtimestamp(
             info.get("regularMarketTime", 0.0)
         ).strftime("%Y-%m-%d")
-        industry = info.get("industry", "")
+        industry: str = info.get("industry", "")
+        long_name: str = info.get("longName", "")
         yield {
             "ticker": ticker,
+            "company_name": " ".join(long_name.split(" ")[:-1]),
             "industry": industry,
             "market_price": market_price,
             "market_price_date": market_price_date,

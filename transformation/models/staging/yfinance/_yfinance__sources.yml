@@ -14,6 +14,8 @@ sources:
               - not_null
           - name: industry
             description: The industry of the company.
+          - name: company_name
+            description: The 'oficial' name of the company.
           - name: market_price
             description: The market quotation for the company.
           - name: market_price_date
