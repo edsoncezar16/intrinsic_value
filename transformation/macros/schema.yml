@@ -10,6 +10,8 @@ macros:
       multi-stage growth model with `n` high-growth years followed by convergence toward a 
       terminal growth rate with a modified payout ratio.
 
+      If earnings are negative, set intrinsic_value to 0.
+
     arguments:
       - name: d
         description: Current dividend per share (float)

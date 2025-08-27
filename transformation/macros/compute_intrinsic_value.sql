@@ -6,7 +6,6 @@
         gt,
         n
     ) %}
-    {# Define SQL expressions as strings #}
     {% set growth_rate = "(1 - (" ~ d ~ " / NULLIF(" ~ e ~ ", 0))) * " ~ roe %}
     {% set payout_ratio_now = "1 - (" ~ growth_rate ~ " / " ~ roe ~ ")" %}
     {% set payout_ratio_terminal = "1 - (" ~ gt ~ " / " ~ roe ~ ")" %}
@@ -18,6 +17,7 @@
     {% set terminal_pv = "(" ~ terminal_value ~ ") / POWER(1 + " ~ r ~ ", " ~ n ~ ")" %}
     (
         CASE
+            WHEN {{ e }} <= 0 THEN 0
             WHEN {{ growth_rate }} < {{ gt }} THEN {{ d }} * (1 + ({{ growth_rate }})) / ({{ r }} - ({{ growth_rate }}))
             ELSE (
                 {{ transient_term }}
