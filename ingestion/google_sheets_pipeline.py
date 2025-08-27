@@ -25,7 +25,7 @@ def load_pipeline_with_ranges(
 
 
 url_or_id = "16PKHlBo1WxiH5FqaY2OHQpb7KLR8AH4FVxT9K23kG3o"
-range_names = ["Sheet 1!A4:E300", "Sheet 1!A1:C2"]
+range_names = ["Sheet 1!A4:D300", "Sheet 1!C1:E2"]
 table_names = ["financial_info", "model_params"]
 
 financial_source = google_spreadsheet(

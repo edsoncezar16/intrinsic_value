@@ -12,9 +12,6 @@ sources:
             tests:
               - unique
               - not_null
-          - name: company
-            description: >
-              The name of the company, as depicted on the Trading View website.
           - name: eanings
             description: The average net earnings of the company over the last 7 years.
           - name: dividends
