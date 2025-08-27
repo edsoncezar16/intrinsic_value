@@ -18,6 +18,7 @@
     (
         CASE
             WHEN {{ e }} <= 0 THEN 0
+            WHEN {{ roe }} < 0 THEN 0
             WHEN {{ growth_rate }} < {{ gt }} THEN {{ d }} * (1 + ({{ growth_rate }})) / ({{ r }} - ({{ growth_rate }}))
             ELSE (
                 {{ transient_term }}
