@@ -2,7 +2,10 @@ SELECT
     ticker,
     industry,
     company_name,
-    market_price,
+    ROUND(
+        market_price,
+        2
+    ),
     market_price_date
 FROM
     {{ source(
