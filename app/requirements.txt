@@ -2,3 +2,4 @@ streamlit>=1.46.1
 pandas>=2.3.1
 sqlalchemy>=2.0.41
 duckdb-engine>=0.17.0
+duckdb<1.4.0
