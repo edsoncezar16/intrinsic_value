@@ -1,8 +1,5 @@
 from dagster import (
     AssetExecutionContext,
-    define_asset_job,
-    AssetSelection,
-    ScheduleDefinition,
 )
 from dagster_dlt import DagsterDltResource, dlt_assets
 from ingestion.google_sheets_pipeline import (
@@ -56,15 +53,5 @@ def dagster_financial_assets(context: AssetExecutionContext, dlt: DagsterDltReso
 def dagster_market_assets(context: AssetExecutionContext, dlt: DagsterDltResource):
     yield from dlt.run(context=context)
 
-
-data_ingestion_job = define_asset_job(
-    "bronze_ingestion_job", selection=AssetSelection.groups("bronze")
-)
-
-data_ingestion_schedule = ScheduleDefinition(
-    job=data_ingestion_job,
-    cron_schedule="0 9 * * 1-5",
-    execution_timezone="America/Belem",
-)
 
 dlt_resource = DagsterDltResource()

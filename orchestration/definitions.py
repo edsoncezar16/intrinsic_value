@@ -1,8 +1,6 @@
 from orchestration.defs.ingestion import (
     dagster_market_assets,
     dagster_financial_assets,
-    data_ingestion_job,
-    data_ingestion_schedule,
     dlt_resource,
 )
 from orchestration.defs.transformation import intrinsic_dbt_assets, intrinsic_project
@@ -10,12 +8,12 @@ from orchestration.defs.branch_deployments import (
     clone_prod,
     drop_prod_clone,
 )
-from dagster import Definitions
+from dagster import Definitions, define_asset_job
 from dagster_dbt import DbtCliResource
 from dagster_duckdb import DuckDBResource
 import os
 
-jobs = [data_ingestion_job]
+jobs = [define_asset_job(name="all_assets_job")]
 
 resources = {
     "dlt": dlt_resource,
@@ -35,6 +33,5 @@ if os.environ.get("DAGSTER_CLOUD_IS_BRANCH_DEPLOYMENT", "") == "1":
 defs = Definitions(
     assets=[dagster_financial_assets, dagster_market_assets, intrinsic_dbt_assets],
     jobs=jobs,
-    schedules=[data_ingestion_schedule],
     resources=resources,
 )
